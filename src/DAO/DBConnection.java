@@ -28,4 +28,14 @@ public class DBConnection {
         }
         return conn;
     }
+
+    public static void closeConnection()
+    {
+        try{
+            conn.close();
+        } catch(Exception e)
+        {
+            // Do nothing
+        }
+    }
 }
