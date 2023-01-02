@@ -25,6 +25,7 @@ public class LoginController implements Initializable {
     public Label loginLabel;
     public Label userNameLabel;
     public Label passwordLabel;
+    public Label locationLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

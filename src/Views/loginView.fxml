@@ -10,14 +10,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginController">
    <children>
-      <SplitPane dividerPositions="0.7" layoutX="400.0" layoutY="50.0" orientation="VERTICAL" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="50.0">
+      <SplitPane dividerPositions="0.7" layoutX="400.0" layoutY="50.0" orientation="VERTICAL" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="50.0">
          <items>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
                <children>
-                  <Label text="Login" fx:id="loginLabel">
+                  <Label fx:id="loginLabel" text="Login">
                      <font>
                         <Font name="Trebuchet MS Bold" size="24.0" />
                      </font>
@@ -30,7 +29,7 @@
                         <Insets left="60.0" right="60.0" top="30.0" />
                      </VBox.margin>
                      <children>
-                        <Label text="User Name" fx:id="userNameLabel">
+                        <Label fx:id="userNameLabel" text="User Name">
                            <font>
                               <Font name="Trebuchet MS" size="14.0" />
                            </font>
@@ -51,7 +50,7 @@
                         <TextField fx:id="passwordField" promptText="Type your password" />
                      </children>
                   </VBox>
-                  <Button fx:id="loginButton" maxWidth="160.0" minWidth="120.0" mnemonicParsing="false" text="Login" onAction="#OnLogin">
+                  <Button fx:id="loginButton" maxWidth="160.0" minWidth="120.0" mnemonicParsing="false" onAction="#OnLogin" text="Login">
                      <VBox.margin>
                         <Insets top="20.0" />
                      </VBox.margin>
@@ -61,9 +60,14 @@
                   <Insets bottom="10.0" />
                </padding>
             </VBox>
-            <VBox alignment="CENTER">
+            <VBox alignment="CENTER" spacing="20.0">
                <children>
-                  <ComboBox fx:id="languageBox" prefWidth="150.0" onAction="#OnUpdateLanguage"/>
+                  <ComboBox fx:id="languageBox" onAction="#OnUpdateLanguage" prefWidth="150.0" />
+                  <Label fx:id="locationLabel" text="UTC">
+                     <font>
+                        <Font name="Trebuchet MS" size="14.0" />
+                     </font>
+                  </Label>
                </children>
             </VBox>
          </items>
