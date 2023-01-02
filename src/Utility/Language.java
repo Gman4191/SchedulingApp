@@ -5,24 +5,24 @@ import java.util.ResourceBundle;
 
 public class Language {
     private Locale assignedLanguage;
-    private static ResourceBundle resourceBundle;
+    private static ResourceBundle resourceBundle = ResourceBundle.getBundle("Utility/Translation_en");
 
     public Language(String languageSuffix)
     {
         assignedLanguage = new Locale(languageSuffix);
     }
-    public static ResourceBundle getLang()
+    public static ResourceBundle getLanguage()
     {
         return resourceBundle;
     }
-    public void setLang()
+    public void setLanguage()
     {
-        resourceBundle = ResourceBundle.getBundle("Translation", assignedLanguage);
+        resourceBundle = ResourceBundle.getBundle("Utility/Translation", assignedLanguage);
     }
 
     @Override
     public String toString()
     {
-        return assignedLanguage.getDisplayLanguage();
+        return resourceBundle.getString(assignedLanguage.getDisplayLanguage());
     }
 }

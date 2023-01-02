@@ -17,7 +17,7 @@
          <items>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
                <children>
-                  <Label text="Login">
+                  <Label text="Login" fx:id="loginLabel">
                      <font>
                         <Font name="Trebuchet MS Bold" size="24.0" />
                      </font>
@@ -30,7 +30,7 @@
                         <Insets left="60.0" right="60.0" top="30.0" />
                      </VBox.margin>
                      <children>
-                        <Label text="User Name">
+                        <Label text="User Name" fx:id="userNameLabel">
                            <font>
                               <Font name="Trebuchet MS" size="14.0" />
                            </font>
@@ -43,7 +43,7 @@
                         <Insets left="60.0" right="60.0" />
                      </VBox.margin>
                      <children>
-                        <Label text="Password">
+                        <Label fx:id="passwordLabel" text="Password">
                            <font>
                               <Font name="Trebuchet MS" size="14.0" />
                            </font>
@@ -63,7 +63,7 @@
             </VBox>
             <VBox alignment="CENTER">
                <children>
-                  <ComboBox fx:id="languageBox" prefWidth="150.0" />
+                  <ComboBox fx:id="languageBox" prefWidth="150.0" onAction="#OnUpdateLanguage"/>
                </children>
             </VBox>
          </items>

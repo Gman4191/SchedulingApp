@@ -25,7 +25,7 @@ public class DBLogin {
         }
 
         if(!resultSet.next())
-            throw new Exception("Invalid user name or password.");
+            throw new Exception("loginError");
     }
 
     public static void selectUsers() {
