@@ -24,11 +24,15 @@ public class DBConnection {
             System.out.println("Connection made!");
         } catch(Exception e)
         {
-            System.out.println("Connection failed");
+            e.printStackTrace();
         }
         return conn;
     }
 
+    public static Connection getConnection()
+    {
+        return conn;
+    }
     public static void closeConnection()
     {
         try{
