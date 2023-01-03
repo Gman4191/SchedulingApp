@@ -21,7 +21,6 @@ public class DBConnection {
         {
             Class.forName(MYSQLJBCDRIVER);
             conn = DriverManager.getConnection(jdbcURL, userName, password);
-            System.out.println("Connection made!");
         } catch(Exception e)
         {
             e.printStackTrace();

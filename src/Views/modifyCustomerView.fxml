@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label text="Modify Customer" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="30.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <HBox AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="300.0" spacing="20.0">
+               <children>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label fx:id="idLabel" text="ID">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="idField" disable="true" text="Auto Generated - Disabled" />
+                     </children>
+                     <VBox.margin>
+                        <Insets right="100.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label fx:id="nameLabel" text="Name">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="nameField" />
+                     </children>
+                     <VBox.margin>
+                        <Insets right="100.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label fx:id="addressLabel" text="Address">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="addressField" />
+                     </children>
+                     <VBox.margin>
+                        <Insets right="100.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label fx:id="postalCodeLabel" text="Postal Code">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="postalCodeField" />
+                     </children>
+                     <VBox.margin>
+                        <Insets right="100.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label fx:id="phoneNumberLabel" text="Phone Number">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="phoneNumberField" />
+                     </children>
+                     <VBox.margin>
+                        <Insets right="100.0" />
+                     </VBox.margin>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox spacing="30.0">
+               <children>
+                  <ComboBox prefWidth="150.0" promptText="Country" />
+                  <ComboBox prefWidth="150.0" promptText="First-Level Division" />
+               </children>
+            </VBox>
+            <HBox alignment="BOTTOM_CENTER" spacing="40.0">
+               <children>
+                  <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" text="Cancel" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
