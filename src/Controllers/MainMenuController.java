@@ -29,13 +29,6 @@ public class MainMenuController implements Initializable {
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneNumberCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
-
-        divisionCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Customer, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Customer, String> c) {
-                String division = DBCustomer.getDivision(c.getValue().getDivisionId());
-                return new SimpleStringProperty(division);
-            }
-        });
+        divisionCol.setCellValueFactory(c -> new SimpleStringProperty(DBCustomer.getDivision(c.getValue().getDivisionId())));
     }
 }
