@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainMenuController">
    <children>
@@ -17,20 +18,21 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="customerTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+                        <TableView fx:id="customerTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
-                            <TableColumn fx:id="customerNameCol" prefWidth="178.33334350585938" text="Customer Name" />
-                            <TableColumn fx:id="divisionCol" prefWidth="133.0" text="Division" />
-                              <TableColumn fx:id="addressCol" prefWidth="155.0" text="Address" />
-                              <TableColumn fx:id="postalCodeCol" prefWidth="114.66668701171875" text="Postal Code" />
-                              <TableColumn fx:id="phoneNumberCol" prefWidth="208.6666259765625" text="Phone Number" />
+                            <TableColumn fx:id="customerNameCol" prefWidth="142.0" text="Customer Name" />
+                              <TableColumn fx:id="countryCol" prefWidth="107.0" text="Country" />
+                            <TableColumn fx:id="divisionCol" prefWidth="168.0" text="Division" />
+                              <TableColumn fx:id="addressCol" minWidth="0.0" prefWidth="119.0" text="Address" />
+                              <TableColumn fx:id="postalCodeCol" prefWidth="200.0" text="Postal Code" />
+                              <TableColumn fx:id="phoneNumberCol" prefWidth="158.0" text="Phone Number" />
                           </columns>
                         </TableView>
                         <HBox layoutX="528.0" layoutY="455.0" spacing="20.0" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="150.0">
                            <children>
-                              <Button minWidth="-Infinity" mnemonicParsing="false" prefWidth="55.0" text="Add" onAction="#onCustomerAdd"/>
-                              <Button minWidth="-Infinity" mnemonicParsing="false" prefWidth="55.0" text="Modify" onAction="#onCustomerModify"/>
-                              <Button minWidth="-Infinity" mnemonicParsing="false" prefWidth="55.0" text="Delete" onAction="#onCustomerDelete"/>
+                              <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#onCustomerAdd" prefWidth="55.0" text="Add" />
+                              <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#onCustomerModify" prefWidth="55.0" text="Modify" />
+                              <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#onCustomerDelete" prefWidth="55.0" text="Delete" />
                            </children>
                         </HBox>
                      </children>
@@ -41,23 +43,40 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+                        <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                           <columns>
-                            <TableColumn prefWidth="29.666664123535156" text="ID" />
-                            <TableColumn prefWidth="91.66665649414062" text="Title" />
-                              <TableColumn prefWidth="113.0" text="Description" />
-                              <TableColumn prefWidth="95.0" text="Location" />
-                              <TableColumn prefWidth="107.0" text="Contact" />
-                              <TableColumn prefWidth="106.33331298828125" text="Start Time" />
-                              <TableColumn prefWidth="112.66668701171875" text="End Time" />
-                              <TableColumn prefWidth="82.0" text="Customer ID" />
-                              <TableColumn prefWidth="56.33331298828125" text="User ID" />
+                            <TableColumn fx:id="appointmentIdCol" prefWidth="29.666664123535156" text="ID" />
+                            <TableColumn fx:id="appointmentTitleCol" prefWidth="91.66665649414062" text="Title" />
+                              <TableColumn fx:id="appointmentTypeCol" prefWidth="77.0" text="Type" />
+                              <TableColumn fx:id="appointmentDescCol" prefWidth="93.0" text="Description" />
+                              <TableColumn fx:id="appointmentLocationCol" prefWidth="95.0" text="Location" />
+                              <TableColumn fx:id="appointmentContactCol" prefWidth="107.0" text="Contact" />
+                              <TableColumn fx:id="appointmentStartCol" prefWidth="106.33331298828125" text="Start Date/Time" />
+                              <TableColumn fx:id="appointmentEndCol" prefWidth="112.66668701171875" text="End Date/Time" />
+                              <TableColumn fx:id="appointmentCustomerCol" prefWidth="99.0" text="Customer" />
+                              <TableColumn fx:id="appointmentUserCol" prefWidth="83.0" text="User" />
                           </columns>
                         </TableView>
+                        <HBox layoutX="14.0" layoutY="20.0" spacing="50.0">
+                           <children>
+                              <RadioButton fx:id="allButton" mnemonicParsing="false" selected="true" text="All">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="AppointmentMode" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="monthButton" mnemonicParsing="false" text="Monthly" toggleGroup="$AppointmentMode" />
+                              <RadioButton fx:id="weekButton" mnemonicParsing="false" text="Weekly" toggleGroup="$AppointmentMode" />
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
+            <Tab text="Reports">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
         </tabs>
       </TabPane>
    </children>

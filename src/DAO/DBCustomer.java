@@ -16,8 +16,9 @@ public class DBCustomer {
     public static ObservableList<Customer> getAllCustomers()
     {
         ObservableList<Customer> customers = observableArrayList();
-        String query = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID " +
-                       "FROM Customers;";
+        String query = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, c.Division_ID, Country " +
+                       "FROM Customers c JOIN first_level_divisions d JOIN Countries country" +
+                " ON c.Division_ID = d.Division_ID AND d.Country_ID = country.Country_ID;";
         ResultSet resultSet;
         try{
             PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
@@ -27,7 +28,8 @@ public class DBCustomer {
             {
                 Customer c = new Customer(resultSet.getInt("Customer_ID"), resultSet.getString("Customer_Name"),
                                           resultSet.getString("Address"), resultSet.getString("Postal_Code"),
-                                          resultSet.getString("Phone"), resultSet.getInt("Division_ID"));
+                                          resultSet.getString("Phone"), resultSet.getInt("Division_ID"),
+                                          resultSet.getString("Country"));
                 customers.add(c);
             }
         } catch(SQLException e)

@@ -27,15 +27,17 @@ public class MainMenuController implements Initializable {
     public TableColumn<Customer, String> addressCol;
     public TableColumn<Customer, String> postalCodeCol;
     public TableColumn<Customer, String> phoneNumberCol;
+    public TableColumn<Customer, String> countryCol;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         customerTable.setItems(DBCustomer.getAllCustomers());
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        countryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
+        divisionCol.setCellValueFactory(c -> new SimpleStringProperty(DBCustomer.getDivisionName(c.getValue().getDivisionId())));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneNumberCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        divisionCol.setCellValueFactory(c -> new SimpleStringProperty(DBCustomer.getDivisionName(c.getValue().getDivisionId())));
     }
 
     public void onCustomerAdd(ActionEvent actionEvent) throws IOException {

@@ -15,6 +15,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.time.ZoneId;
 import java.util.ResourceBundle;
 
 import static javafx.collections.FXCollections.observableArrayList;
@@ -35,6 +37,8 @@ public class LoginController implements Initializable {
         languages.addAll(new Language("en"), new Language("fr"));
         languageBox.setItems(languages);
         languageBox.setValue(languages.get(0));
+
+        locationLabel.setText(ZoneId.systemDefault().toString());
     }
 
 
