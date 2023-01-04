@@ -30,8 +30,7 @@ public class AddCustomerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        countryBox.setItems();
-        divisionBox.setItems();
+        countryBox.setItems(DBCustomer.getAllCountries());
     }
 
     public void OnSave(ActionEvent actionEvent) throws IOException {
@@ -89,4 +88,7 @@ public class AddCustomerController implements Initializable {
         return true;
     }
 
+    public void OnSelectCountry(ActionEvent actionEvent) {
+        divisionBox.setItems(DBCustomer.getDivisions(countryBox.getSelectionModel().getSelectedItem()));
+    }
 }

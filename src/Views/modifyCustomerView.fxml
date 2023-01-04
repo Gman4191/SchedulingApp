@@ -24,7 +24,7 @@
                <children>
                   <VBox spacing="5.0">
                      <children>
-                        <Label fx:id="idLabel" text="ID">
+                        <Label text="ID">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -37,7 +37,7 @@
                   </VBox>
                   <VBox spacing="5.0">
                      <children>
-                        <Label fx:id="nameLabel" text="Name">
+                        <Label text="Name">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -50,7 +50,7 @@
                   </VBox>
                   <VBox spacing="5.0">
                      <children>
-                        <Label fx:id="addressLabel" text="Address">
+                        <Label text="Address">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -63,7 +63,7 @@
                   </VBox>
                   <VBox spacing="5.0">
                      <children>
-                        <Label fx:id="postalCodeLabel" text="Postal Code">
+                        <Label text="Postal Code">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -76,7 +76,7 @@
                   </VBox>
                   <VBox spacing="5.0">
                      <children>
-                        <Label fx:id="phoneNumberLabel" text="Phone Number">
+                        <Label text="Phone Number">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -91,14 +91,14 @@
             </VBox>
             <VBox spacing="30.0">
                <children>
-                  <ComboBox prefWidth="150.0" promptText="Country" />
-                  <ComboBox prefWidth="150.0" promptText="First-Level Division" />
+                  <ComboBox fx:id="countryBox" prefWidth="150.0" promptText="Country" />
+                  <ComboBox fx:id="divisionBox" prefWidth="150.0" promptText="First-Level Division" />
                </children>
             </VBox>
             <HBox alignment="BOTTOM_CENTER" spacing="40.0">
                <children>
-                  <Button fx:id="saveButton" mnemonicParsing="false" text="Save" onAction="#OnSave"/>
-                  <Button fx:id="cancelButton" mnemonicParsing="false" text="Cancel" onAction="#OnCancel"/>
+                  <Button mnemonicParsing="false" text="Save" onAction="#OnSave"/>
+                  <Button mnemonicParsing="false" text="Cancel" onAction="#OnCancel"/>
                </children>
             </HBox>
          </children>

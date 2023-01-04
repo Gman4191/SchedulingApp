@@ -4,7 +4,6 @@ import DAO.DBCustomer;
 import Models.Customer;
 import Utility.Utilities;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -36,7 +35,7 @@ public class MainMenuController implements Initializable {
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneNumberCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        divisionCol.setCellValueFactory(c -> new SimpleStringProperty(DBCustomer.getDivision(c.getValue().getDivisionId())));
+        divisionCol.setCellValueFactory(c -> new SimpleStringProperty(DBCustomer.getDivisionName(c.getValue().getDivisionId())));
     }
 
     public void onCustomerAdd(ActionEvent actionEvent) throws IOException {
@@ -48,19 +47,24 @@ public class MainMenuController implements Initializable {
     }
 
     public void onCustomerModify(ActionEvent actionEvent) throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/modifyCustomerView.fxml"));
+        Parent root = loader.load();
+        ModifyCustomerController controller = loader.getController();
+        loader.setController(controller);
+
         try {
             Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+
             if(selectedCustomer == null)
                 throw new Exception("A customer must be selected for modification");
+
+            controller.setCustomerData(selectedCustomer);
         } catch(Exception e)
         {
             Utilities.displayErrorMessage(e.getMessage());
             return;
         }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/modifyCustomerView.fxml"));
-        ModifyCustomerController controller = loader.getController();
-        Parent root = loader.load();
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);

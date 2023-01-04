@@ -36,29 +36,6 @@ public class DBCustomer {
         }
         return customers;
     }
-
-    public static String getDivision(int divisionId)
-    {
-        String division = null;
-        String query = "SELECT Division FROM first_level_divisions WHERE Division_ID = ?;";
-        ResultSet resultSet;
-
-        try{
-            PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
-            select.setInt(1, divisionId);
-            select.executeQuery();
-            resultSet = select.getResultSet();
-
-            if(resultSet.next())
-                division = resultSet.getString("Division");
-        } catch(SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        return division;
-    }
-
     public static ObservableList<Country> getAllCountries()
     {
         ObservableList<Country> countries = observableArrayList();
@@ -73,7 +50,7 @@ public class DBCustomer {
             while(resultSet.next())
             {
                 countries.add(new Country(resultSet.getInt("Country_ID"),
-                                          resultSet.getString("Country")));
+                        resultSet.getString("Country")));
             }
         } catch(SQLException e)
         {
@@ -86,24 +63,48 @@ public class DBCustomer {
     public static ObservableList<FirstLevelDivision> getDivisions(Country selectedCountry)
     {
         ObservableList<FirstLevelDivision> divisions = observableArrayList();
-        String query = "SELECT Division_ID, Division FROM first_level_divisions WHERE Country_ID LIKE ?;";
+        String query = "SELECT Division_ID, Division FROM first_level_divisions WHERE Country_ID = ?;";
         ResultSet resultSet;
 
         try{
             PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
-            select.setString(1, selectedCountry.getCountry());
+            select.setInt(1, selectedCountry.getId());
             select.executeQuery();
             resultSet = select.getResultSet();
 
             while(resultSet.next())
             {
                 divisions.add(new FirstLevelDivision(resultSet.getInt("Division_ID"),
-                                                     resultSet.getString("Division")));
+                        resultSet.getString("Division"), selectedCountry.getId()));
             }
         } catch(SQLException e)
         {
             e.printStackTrace();
         }
+
+        return divisions;
+    }
+
+    public static String getDivisionName(int divisionId)
+    {
+        String divisionName = null;
+        String query = "SELECT Division FROM first_level_divisions WHERE Division_ID = ?;";
+        ResultSet resultSet;
+
+        try{
+            PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
+            select.setInt(1, divisionId);
+            select.executeQuery();
+            resultSet = select.getResultSet();
+
+            if(resultSet.next())
+                divisionName = resultSet.getString("Division");
+        } catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return divisionName;
     }
 
     public static void addCustomer(Customer newCustomer)
@@ -120,8 +121,27 @@ public class DBCustomer {
             insert.setString(5, User.getUserName());
             insert.setString(6, User.getUserName());
             insert.setInt(7, newCustomer.getDivisionId());
-            insert.executeQuery();
-            //DBConnection.getConnection().commit();
+            insert.execute();
+        } catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateCustomer(Customer selectedCustomer)
+    {
+        String query = "UPDATE Customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?," +
+                "Last_Update = CURRENT_TIMESTAMP, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?;";
+        try{
+            PreparedStatement update = DBConnection.getConnection().prepareStatement(query);
+            update.setString(1, selectedCustomer.getName());
+            update.setString(2, selectedCustomer.getAddress());
+            update.setString(3, selectedCustomer.getPostalCode());
+            update.setString(4, selectedCustomer.getPhone());
+            update.setString(5, User.getUserName());
+            update.setInt(6, selectedCustomer.getDivisionId());
+            update.setInt(7, selectedCustomer.getId());
+            update.execute();
         } catch(SQLException e)
         {
             e.printStackTrace();
