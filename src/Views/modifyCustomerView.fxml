@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ModifyCustomerController">
    <children>
       <Label text="Modify Customer" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="30.0">
          <font>
@@ -97,8 +97,8 @@
             </VBox>
             <HBox alignment="BOTTOM_CENTER" spacing="40.0">
                <children>
-                  <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
-                  <Button fx:id="cancelButton" mnemonicParsing="false" text="Cancel" />
+                  <Button fx:id="saveButton" mnemonicParsing="false" text="Save" onAction="#OnSave"/>
+                  <Button fx:id="cancelButton" mnemonicParsing="false" text="Cancel" onAction="#OnCancel"/>
                </children>
             </HBox>
          </children>

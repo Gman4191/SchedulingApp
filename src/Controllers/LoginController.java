@@ -1,6 +1,7 @@
 package Controllers;
 
 import DAO.DBLogin;
+import Models.User;
 import Utility.Language;
 import Utility.Utilities;
 import javafx.collections.ObservableList;
@@ -9,10 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -43,9 +41,13 @@ public class LoginController implements Initializable {
     public void OnLogin(ActionEvent actionEvent) throws IOException {
         try{
             DBLogin.verifyUser(userNameField.getText(), passwordField.getText());
+            User.setUserName(userNameField.getText());
         } catch(Exception e)
         {
-            Utilities.displayErrorMessage(e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR, Language.getLanguage().getString(e.getMessage()));
+            alert.setHeaderText(Language.getLanguage().getString("error"));
+            alert.show();
+            return;
         }
 
         Parent root = new FXMLLoader(getClass().getResource("../Views/MainMenuView.fxml")).load();

@@ -13,4 +13,10 @@ public class FirstLevelDivision {
     public void setId(int id){this.id = id;}
     public String getDivision(){return division;}
     public void setDivision(String division){this.division = division;}
+
+    @Override
+    public String toString()
+    {
+        return division;
+    }
 }

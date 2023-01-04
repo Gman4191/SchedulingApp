@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainMenuController">
    <children>
@@ -28,9 +28,9 @@
                         </TableView>
                         <HBox layoutX="528.0" layoutY="455.0" spacing="20.0" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="150.0">
                            <children>
-                              <Button minWidth="-Infinity" mnemonicParsing="false" prefWidth="55.0" text="Add" />
-                              <Button minWidth="-Infinity" mnemonicParsing="false" prefWidth="55.0" text="Modify" />
-                              <Button minWidth="-Infinity" mnemonicParsing="false" prefWidth="55.0" text="Delete" />
+                              <Button minWidth="-Infinity" mnemonicParsing="false" prefWidth="55.0" text="Add" onAction="#onCustomerAdd"/>
+                              <Button minWidth="-Infinity" mnemonicParsing="false" prefWidth="55.0" text="Modify" onAction="#onCustomerModify"/>
+                              <Button minWidth="-Infinity" mnemonicParsing="false" prefWidth="55.0" text="Delete" onAction="#onCustomerDelete"/>
                            </children>
                         </HBox>
                      </children>
