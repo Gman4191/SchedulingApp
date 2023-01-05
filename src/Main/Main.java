@@ -17,7 +17,10 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
+    /**
+     * Establish connection to the database and launch the application
+     * @param args the application arguments
+     */
     public static void main(String[] args) {
         DBConnection.makeConnection();
         launch(args);

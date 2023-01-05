@@ -11,7 +11,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.ZoneId;
@@ -20,14 +19,42 @@ import java.util.ResourceBundle;
 import static javafx.collections.FXCollections.observableArrayList;
 
 public class LoginController implements Initializable {
+
+    /**
+     * The login button
+     */
     public Button loginButton;
-    public ComboBox<Language> languageBox;
+    /**
+     * Contains the user's password
+     */
     public TextField passwordField;
+    /**
+     * Contains the user's name
+     */
     public TextField userNameField;
+    /**
+     * Drop down of language options
+     */
+    public ComboBox<Language> languageBox;
+    /**
+     * Languages to translate the page between
+     */
     private final ObservableList<Language> languages = observableArrayList();
+    /**
+     * Login page title
+     */
     public Label loginLabel;
+    /**
+     * Label describing the user name text field
+     */
     public Label userNameLabel;
+    /**
+     * Label describing the password text field
+     */
     public Label passwordLabel;
+    /**
+     * Label noting the user's location
+     */
     public Label locationLabel;
 
     @Override
@@ -35,11 +62,14 @@ public class LoginController implements Initializable {
         languages.addAll(new Language("en"), new Language("fr"));
         languageBox.setItems(languages);
         languageBox.setValue(languages.get(0));
-
         locationLabel.setText(ZoneId.systemDefault().toString());
     }
 
-
+    /**
+     * Attempt to login to the scheduling application
+     * @param actionEvent the handled login event
+     * @throws IOException when the main menu page fails to load
+     */
     public void OnLogin(ActionEvent actionEvent) throws IOException {
         try{
             DBLogin.verifyUser(userNameField.getText(), passwordField.getText());
@@ -59,6 +89,10 @@ public class LoginController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Update the language used in the login page
+     * @param actionEvent
+     */
     public void OnUpdateLanguage(ActionEvent actionEvent) {
         Language language = languageBox.getSelectionModel().getSelectedItem();
         language.setLanguage();

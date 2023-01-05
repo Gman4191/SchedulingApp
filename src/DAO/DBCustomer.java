@@ -5,25 +5,27 @@ import Models.Customer;
 import Models.FirstLevelDivision;
 import Models.User;
 import javafx.collections.ObservableList;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import static javafx.collections.FXCollections.observableArrayList;
 
 public class DBCustomer {
+    /**
+     * Get all the customers in the database
+     * @return a list of customers
+     */
     public static ObservableList<Customer> getAllCustomers()
     {
         ObservableList<Customer> customers = observableArrayList();
         String query = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, c.Division_ID, d.Country_ID, Country " +
-                       "FROM Customers c JOIN first_level_divisions d JOIN Countries country" +
-                " ON c.Division_ID = d.Division_ID AND d.Country_ID = country.Country_ID;";
-        ResultSet resultSet;
+                       "FROM Customers c JOIN first_level_divisions d JOIN Countries country " +
+                       "ON c.Division_ID = d.Division_ID AND d.Country_ID = country.Country_ID;";
         try{
             PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
             select.executeQuery();
-            resultSet = select.getResultSet();
+
+            ResultSet resultSet = select.getResultSet();
             while(resultSet.next())
             {
                 Customer c = new Customer(resultSet.getInt("Customer_ID"), resultSet.getString("Customer_Name"),
@@ -36,18 +38,23 @@ public class DBCustomer {
         {
             e.printStackTrace();
         }
+
         return customers;
     }
+
+    /**
+     * Get all the countries in the database
+     * @return a list of countries
+     */
     public static ObservableList<Country> getAllCountries()
     {
         ObservableList<Country> countries = observableArrayList();
         String query = "SELECT Country_ID, Country FROM Countries;";
-        ResultSet resultSet;
 
         try{
             PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
             select.executeQuery();
-            resultSet = select.getResultSet();
+            ResultSet resultSet = select.getResultSet();
 
             while(resultSet.next())
             {
@@ -62,17 +69,21 @@ public class DBCustomer {
         return countries;
     }
 
+    /**
+     * Get the first-level divisions within the selected country
+     * @param selectedCountry the selected country
+     * @return a list of first-level divisions
+     */
     public static ObservableList<FirstLevelDivision> getDivisions(Country selectedCountry)
     {
         ObservableList<FirstLevelDivision> divisions = observableArrayList();
         String query = "SELECT Division_ID, Division FROM first_level_divisions WHERE Country_ID = ?;";
-        ResultSet resultSet;
 
         try{
             PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
             select.setInt(1, selectedCountry.getId());
             select.executeQuery();
-            resultSet = select.getResultSet();
+            ResultSet resultSet = select.getResultSet();
 
             while(resultSet.next())
             {
@@ -87,6 +98,10 @@ public class DBCustomer {
         return divisions;
     }
 
+    /**
+     * Add a customer to the database
+     * @param newCustomer the customer to add
+     */
     public static void addCustomer(Customer newCustomer)
     {
         String query = "INSERT INTO Customers(Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, " +
@@ -108,6 +123,10 @@ public class DBCustomer {
         }
     }
 
+    /**
+     * Update a specified customer in the database
+     * @param selectedCustomer the customer to update
+     */
     public static void updateCustomer(Customer selectedCustomer)
     {
         String query = "UPDATE Customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?," +
@@ -128,6 +147,10 @@ public class DBCustomer {
         }
     }
 
+    /**
+     * Delete a customer from the database
+     * @param selectedCustomer the customer to be deleted
+     */
     public static void deleteCustomer(Customer selectedCustomer)
     {
         String deleteCustomerQuery = "DELETE FROM Customers WHERE Customer_ID = ?;";
@@ -149,17 +172,21 @@ public class DBCustomer {
         }
     }
 
+    /**
+     * Find a first-level division by id
+     * @param divisionId the division id to search for
+     * @return the found first-level division
+     */
     public static FirstLevelDivision getDivision(int divisionId)
     {
         FirstLevelDivision division = null;
         String query = "SELECT Division, Country_ID FROM first_level_divisions WHERE Division_ID = ?;";
-        ResultSet resultSet;
 
         try{
             PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
             select.setInt(1, divisionId);
             select.executeQuery();
-            resultSet = select.getResultSet();
+            ResultSet resultSet = select.getResultSet();
 
             if(resultSet.next())
                 division = new FirstLevelDivision(divisionId, resultSet.getString("Division"),
@@ -172,6 +199,11 @@ public class DBCustomer {
         return division;
     }
 
+    /**
+     * Find a country by id
+     * @param countryId the country id to search for
+     * @return the found country
+     */
     public static Country getCountry(int countryId){
         String query = "SELECT Country_ID, Country FROM Countries WHERE Country_ID = ?;";
         Country country = null;

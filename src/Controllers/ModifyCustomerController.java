@@ -14,19 +14,39 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ModifyCustomerController implements Initializable {
 
+    /**
+     * Contains the customer id
+     */
     public TextField idField;
+    /**
+     * Contains the customer name
+     */
     public TextField nameField;
+    /**
+     * Contains the customer address
+     */
     public TextField addressField;
+    /**
+     * Contains the customer postal code
+     */
     public TextField postalCodeField;
+    /**
+     * Contains the customer phone number
+     */
     public TextField phoneNumberField;
+    /**
+     * Drop down of country options
+     */
     public ComboBox<Country> countryBox;
+    /**
+     * Drop down of first-level division options
+     */
     public ComboBox<FirstLevelDivision> divisionBox;
 
 
@@ -35,6 +55,10 @@ public class ModifyCustomerController implements Initializable {
         countryBox.setItems(DBCustomer.getAllCountries());
     }
 
+    /**
+     * Populate the page with the selected customer's information
+     * @param selectedCustomer the selected customer
+     */
     public void setCustomerData(Customer selectedCustomer)
     {
         idField.setText(((Integer)selectedCustomer.getId()).toString());
@@ -49,6 +73,12 @@ public class ModifyCustomerController implements Initializable {
         divisionBox.setItems(DBCustomer.getDivisions(selectedCountry));
         divisionBox.getSelectionModel().select(DBCustomer.getDivision(selectedCustomer.getDivisionId()));
     }
+
+    /**
+     * Save the modified customer
+     * @param actionEvent the handled save customer event
+     * @throws IOException when the main menu fails to load
+     */
     public void OnSave(ActionEvent actionEvent) throws IOException {
         if(!validateData())
             return;
@@ -66,6 +96,11 @@ public class ModifyCustomerController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Cancel modifying the selected customer
+     * @param actionEvent the handled cancel modify event
+     * @throws IOException when the main menu fails to load
+     */
     public void OnCancel(ActionEvent actionEvent) throws IOException{
         Parent root = new FXMLLoader(getClass().getResource("/Views/mainMenuView.fxml")).load();
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
@@ -74,6 +109,10 @@ public class ModifyCustomerController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Validate the entered customer information
+     * @return true if the entered information is valid
+     */
     public boolean validateData()
     {
         try

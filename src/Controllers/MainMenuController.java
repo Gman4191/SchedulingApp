@@ -14,19 +14,39 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
 
+    /**
+     * Table displaying the customers
+     */
     public TableView<Customer> customerTable;
+    /**
+     * Contains customer names
+     */
     public TableColumn<Customer, String> customerNameCol;
+    /**
+     * Contains customer first-level divisions
+     */
     public TableColumn<Customer, String> divisionCol;
+    /**
+     * Contains customer addresses
+     */
     public TableColumn<Customer, String> addressCol;
+    /**
+     * Contains customer postal codes
+     */
     public TableColumn<Customer, String> postalCodeCol;
+    /**
+     * Contains customer phone numbers
+     */
     public TableColumn<Customer, String> phoneNumberCol;
+    /**
+     * Contains customer country names
+     */
     public TableColumn<Customer, String> countryCol;
 
     @Override
@@ -41,6 +61,11 @@ public class MainMenuController implements Initializable {
         phoneNumberCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
     }
 
+    /**
+     * Load and display the customer add form
+     * @param actionEvent the handled add customer event
+     * @throws IOException when the customer add form fails to load
+     */
     public void onCustomerAdd(ActionEvent actionEvent) throws IOException {
         Parent root = new FXMLLoader(getClass().getResource("/Views/addCustomerView.fxml")).load();
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
@@ -49,6 +74,11 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Load and display the customer modify form
+     * @param actionEvent the handled modify event
+     * @throws IOException when the customer modify form fails to load
+     */
     public void onCustomerModify(ActionEvent actionEvent) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/modifyCustomerView.fxml"));
         Parent root = loader.load();
@@ -74,6 +104,10 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Attempt a customer record deletion
+     * @param actionEvent the handled customer delete event
+     */
     public void onCustomerDelete(ActionEvent actionEvent) {
         try{
             Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
@@ -92,6 +126,5 @@ public class MainMenuController implements Initializable {
         {
             Utilities.displayErrorMessage(e.getMessage());
         }
-
     }
 }

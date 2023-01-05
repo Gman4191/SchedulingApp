@@ -2,7 +2,7 @@ package DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
+
 public class DBConnection {
     private static final String protocol = "jdbc";
     private static final String userName = "sqlUser";
@@ -15,6 +15,11 @@ public class DBConnection {
     private static final String jdbcURL = protocol + vendorName + serverIp + databaseName;
 
     private static Connection conn = null;
+
+    /**
+     * Make a connection to the database
+     * @return the made database connection
+     */
     public static Connection makeConnection()
     {
         try
@@ -28,10 +33,18 @@ public class DBConnection {
         return conn;
     }
 
+    /**
+     * Get the database connection
+     * @return the database connection
+     */
     public static Connection getConnection()
     {
         return conn;
     }
+
+    /**
+     * Close the database connection
+     */
     public static void closeConnection()
     {
         try{
