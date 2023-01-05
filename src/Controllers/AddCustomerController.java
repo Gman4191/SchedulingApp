@@ -41,6 +41,7 @@ public class AddCustomerController implements Initializable {
         // Add a new customer
         Customer newCustomer = new Customer(0, nameField.getText(), addressField.getText(), postalCodeField.getText(),
                                             phoneNumberField.getText(), divisionBox.getSelectionModel().getSelectedItem().getId(),
+                                            countryBox.getSelectionModel().getSelectedItem().getId(),
                                             countryBox.getSelectionModel().getSelectedItem().getCountry());
         DBCustomer.addCustomer(newCustomer);
 

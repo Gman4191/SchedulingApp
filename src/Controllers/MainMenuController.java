@@ -34,7 +34,8 @@ public class MainMenuController implements Initializable {
         customerTable.setItems(DBCustomer.getAllCustomers());
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         countryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
-        divisionCol.setCellValueFactory(c -> new SimpleStringProperty(DBCustomer.getDivisionName(c.getValue().getDivisionId())));
+        divisionCol.setCellValueFactory(c -> new SimpleStringProperty(DBCustomer.getDivision(
+                                                                          c.getValue().getDivisionId()).getDivision()));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneNumberCol.setCellValueFactory(new PropertyValueFactory<>("phone"));

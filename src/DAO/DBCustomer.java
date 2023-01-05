@@ -16,7 +16,7 @@ public class DBCustomer {
     public static ObservableList<Customer> getAllCustomers()
     {
         ObservableList<Customer> customers = observableArrayList();
-        String query = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, c.Division_ID, Country " +
+        String query = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, c.Division_ID, d.Country_ID, Country " +
                        "FROM Customers c JOIN first_level_divisions d JOIN Countries country" +
                 " ON c.Division_ID = d.Division_ID AND d.Country_ID = country.Country_ID;";
         ResultSet resultSet;
@@ -29,7 +29,7 @@ public class DBCustomer {
                 Customer c = new Customer(resultSet.getInt("Customer_ID"), resultSet.getString("Customer_Name"),
                                           resultSet.getString("Address"), resultSet.getString("Postal_Code"),
                                           resultSet.getString("Phone"), resultSet.getInt("Division_ID"),
-                                          resultSet.getString("Country"));
+                                          resultSet.getInt("Country_ID"), resultSet.getString("Country"));
                 customers.add(c);
             }
         } catch(SQLException e)
@@ -87,28 +87,6 @@ public class DBCustomer {
         return divisions;
     }
 
-    public static String getDivisionName(int divisionId)
-    {
-        String divisionName = null;
-        String query = "SELECT Division FROM first_level_divisions WHERE Division_ID = ?;";
-        ResultSet resultSet;
-
-        try{
-            PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
-            select.setInt(1, divisionId);
-            select.executeQuery();
-            resultSet = select.getResultSet();
-
-            if(resultSet.next())
-                divisionName = resultSet.getString("Division");
-        } catch(SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        return divisionName;
-    }
-
     public static void addCustomer(Customer newCustomer)
     {
         String query = "INSERT INTO Customers(Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, " +
@@ -148,5 +126,47 @@ public class DBCustomer {
         {
             e.printStackTrace();
         }
+    }
+    public static FirstLevelDivision getDivision(int divisionId)
+    {
+        FirstLevelDivision division = null;
+        String query = "SELECT Division, Country_ID FROM first_level_divisions WHERE Division_ID = ?;";
+        ResultSet resultSet;
+
+        try{
+            PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
+            select.setInt(1, divisionId);
+            select.executeQuery();
+            resultSet = select.getResultSet();
+
+            if(resultSet.next())
+                division = new FirstLevelDivision(divisionId, resultSet.getString("Division"),
+                        resultSet.getInt("Country_ID"));
+        } catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return division;
+    }
+
+    public static Country getCountry(int countryId){
+        String query = "SELECT Country_ID, Country FROM Countries WHERE Country_ID = ?;";
+        Country country = null;
+
+        try{
+            PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
+            select.setInt(1, countryId);
+            select.executeQuery();
+            ResultSet resultSet = select.getResultSet();
+
+            if(resultSet.next())
+                country = new Country(resultSet.getInt("Country_ID"), resultSet.getString("Country"));
+        } catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return country;
     }
 }
