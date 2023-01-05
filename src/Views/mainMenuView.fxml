@@ -43,7 +43,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+                        <TableView fx:id="appointmentTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                           <columns>
                             <TableColumn fx:id="appointmentIdCol" prefWidth="29.666664123535156" text="ID" />
                             <TableColumn fx:id="appointmentTitleCol" prefWidth="91.66665649414062" text="Title" />

@@ -1,6 +1,8 @@
 package Controllers;
 
+import DAO.DBAppointment;
 import DAO.DBCustomer;
+import Models.Appointment;
 import Models.Customer;
 import Utility.Utilities;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
@@ -49,8 +52,29 @@ public class MainMenuController implements Initializable {
      */
     public TableColumn<Customer, String> countryCol;
 
+    public TableView<Appointment> appointmentTable;
+    public TableColumn<Appointment, Integer> appointmentIdCol;
+    public TableColumn<Appointment, String> appointmentTitleCol;
+    public TableColumn<Appointment, String> appointmentTypeCol;
+    public TableColumn<Appointment, String> appointmentDescCol;
+    public TableColumn<Appointment, String> appointmentLocationCol;
+    public TableColumn<Appointment, String> appointmentContactCol;
+    public TableColumn<Appointment, LocalDateTime> appointmentStartCol;
+    public TableColumn<Appointment, LocalDateTime> appointmentEndCol;
+    public TableColumn<Appointment, String> appointmentCustomerCol;
+    public TableColumn<Appointment, String> appointmentUserCol;
+
+    /**
+     * Initialize the main menu
+     * <p>LAMBDA JUSTIFICATION: The lambda function used for the first-level division name
+     * adds readability by replacing the division id in the table view.</p>
+     * @param url the URL
+     * @param resourceBundle the resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        // Initialize the customer table
         customerTable.setItems(DBCustomer.getAllCustomers());
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         countryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
@@ -59,6 +83,19 @@ public class MainMenuController implements Initializable {
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneNumberCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+
+        //Initialize the appointments table
+        appointmentTable.setItems(DBAppointment.getAllAppointments());
+        appointmentIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        appointmentTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        appointmentDescCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        appointmentLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        appointmentTypeCol.setCellValueFactory((new PropertyValueFactory<>("type")));
+        appointmentStartCol.setCellValueFactory(new PropertyValueFactory<>("start"));
+        appointmentEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+        appointmentCustomerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        appointmentUserCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        appointmentContactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
     }
 
     /**
