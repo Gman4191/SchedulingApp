@@ -130,7 +130,23 @@ public class DBCustomer {
 
     public static void deleteCustomer(Customer selectedCustomer)
     {
-        String query = "";
+        String deleteCustomerQuery = "DELETE FROM Customers WHERE Customer_ID = ?;";
+        String deleteAssociatedAppointmentQuery = "DELETE FROM Appointments WHERE Customer_ID = ?;";
+
+        try{
+            // Delete all the appointments associated with the selected customer
+            PreparedStatement delete = DBConnection.getConnection().prepareStatement(deleteAssociatedAppointmentQuery);
+            delete.setInt(1, selectedCustomer.getId());
+            delete.execute();
+
+            // Delete the customer record
+            delete = DBConnection.getConnection().prepareStatement(deleteCustomerQuery);
+            delete.setInt(1, selectedCustomer.getId());
+            delete.execute();
+        } catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public static FirstLevelDivision getDivision(int divisionId)

@@ -81,11 +81,12 @@ public class MainMenuController implements Initializable {
             if(selectedCustomer == null)
                 throw new Exception("A customer must be selected for deletion");
 
-            if(Utilities.displayConfirmationMessage("Are you sure you want to delete customer: " + selectedCustomer.getName() +
+            if(Utilities.displayConfirmationMessage("Are you sure you want to permanently delete " + selectedCustomer.getName() +
                                                     " and their associated appointments?"))
             {
                 Utilities.displayMessage("Customer, " + selectedCustomer.getName() + ", was deleted.");
                 DBCustomer.deleteCustomer(selectedCustomer);
+                customerTable.setItems(DBCustomer.getAllCustomers());
             }
         } catch(Exception e)
         {
