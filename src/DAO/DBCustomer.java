@@ -127,6 +127,12 @@ public class DBCustomer {
             e.printStackTrace();
         }
     }
+
+    public static void deleteCustomer(Customer selectedCustomer)
+    {
+        String query = "";
+    }
+
     public static FirstLevelDivision getDivision(int divisionId)
     {
         FirstLevelDivision division = null;

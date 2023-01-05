@@ -1,6 +1,5 @@
 package Controllers;
 
-import DAO.DBConnection;
 import DAO.DBCustomer;
 import Models.Country;
 import Models.Customer;
@@ -46,7 +45,7 @@ public class AddCustomerController implements Initializable {
         DBCustomer.addCustomer(newCustomer);
 
         // Return to the main menu
-        Parent root = new FXMLLoader(getClass().getResource("/Views/MainMenuView.fxml")).load();
+        Parent root = new FXMLLoader(getClass().getResource("/Views/mainMenuView.fxml")).load();
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -54,7 +53,7 @@ public class AddCustomerController implements Initializable {
     }
 
     public void OnCancel(ActionEvent actionEvent) throws IOException{
-        Parent root = new FXMLLoader(getClass().getResource("/Views/MainMenuView.fxml")).load();
+        Parent root = new FXMLLoader(getClass().getResource("/Views/mainMenuView.fxml")).load();
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);

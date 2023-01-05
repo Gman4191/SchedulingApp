@@ -3,7 +3,6 @@ package Controllers;
 import DAO.DBLogin;
 import Models.User;
 import Utility.Language;
-import Utility.Utilities;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
 
@@ -54,7 +52,7 @@ public class LoginController implements Initializable {
             return;
         }
 
-        Parent root = new FXMLLoader(getClass().getResource("../Views/MainMenuView.fxml")).load();
+        Parent root = new FXMLLoader(getClass().getResource("../Views/mainMenuView.fxml")).load();
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -72,4 +70,5 @@ public class LoginController implements Initializable {
         passwordLabel.setText(Language.getLanguage().getString("password"));
         passwordField.setPromptText(Language.getLanguage().getString("passwordField"));
     }
+
 }

@@ -75,5 +75,22 @@ public class MainMenuController implements Initializable {
     }
 
     public void onCustomerDelete(ActionEvent actionEvent) {
+        try{
+            Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+
+            if(selectedCustomer == null)
+                throw new Exception("A customer must be selected for deletion");
+
+            if(Utilities.displayConfirmationMessage("Are you sure you want to delete customer: " + selectedCustomer.getName() +
+                                                    " and their associated appointments?"))
+            {
+                Utilities.displayMessage("Customer, " + selectedCustomer.getName() + ", was deleted.");
+                DBCustomer.deleteCustomer(selectedCustomer);
+            }
+        } catch(Exception e)
+        {
+            Utilities.displayErrorMessage(e.getMessage());
+        }
+
     }
 }

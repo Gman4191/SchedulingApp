@@ -53,9 +53,13 @@ public class ModifyCustomerController implements Initializable {
         if(!validateData())
             return;
 
+        Customer updatedCustomer = new Customer(Integer.parseInt(idField.getText()), nameField.getText(), addressField.getText(), postalCodeField.getText(),
+                                                phoneNumberField.getText(), divisionBox.getSelectionModel().getSelectedItem().getId(),
+                                                countryBox.getSelectionModel().getSelectedItem().getId(),
+                                                countryBox.getSelectionModel().getSelectedItem().getCountry());
+        DBCustomer.updateCustomer(updatedCustomer);
 
-
-        Parent root = new FXMLLoader(getClass().getResource("/Views/MainMenuView.fxml")).load();
+        Parent root = new FXMLLoader(getClass().getResource("/Views/mainMenuView.fxml")).load();
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -63,7 +67,7 @@ public class ModifyCustomerController implements Initializable {
     }
 
     public void OnCancel(ActionEvent actionEvent) throws IOException{
-        Parent root = new FXMLLoader(getClass().getResource("/Views/MainMenuView.fxml")).load();
+        Parent root = new FXMLLoader(getClass().getResource("/Views/mainMenuView.fxml")).load();
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);

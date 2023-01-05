@@ -47,7 +47,7 @@
                               <Font name="Trebuchet MS" size="14.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="passwordField" promptText="Type your password" />
+                        <TextField fx:id="passwordField" promptText="Type your password"/>
                      </children>
                   </VBox>
                   <Button fx:id="loginButton" maxWidth="160.0" minWidth="120.0" mnemonicParsing="false" onAction="#OnLogin" text="Login">
