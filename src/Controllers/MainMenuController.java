@@ -18,7 +18,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
@@ -59,8 +61,9 @@ public class MainMenuController implements Initializable {
     public TableColumn<Appointment, String> appointmentDescCol;
     public TableColumn<Appointment, String> appointmentLocationCol;
     public TableColumn<Appointment, String> appointmentContactCol;
-    public TableColumn<Appointment, LocalDateTime> appointmentStartCol;
-    public TableColumn<Appointment, LocalDateTime> appointmentEndCol;
+    public TableColumn<Appointment, LocalDate> appointmentDateCol;
+    public TableColumn<Appointment, LocalTime> appointmentStartCol;
+    public TableColumn<Appointment, LocalTime> appointmentEndCol;
     public TableColumn<Appointment, String> appointmentCustomerCol;
     public TableColumn<Appointment, String> appointmentUserCol;
 
@@ -91,6 +94,7 @@ public class MainMenuController implements Initializable {
         appointmentDescCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         appointmentLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
         appointmentTypeCol.setCellValueFactory((new PropertyValueFactory<>("type")));
+        appointmentDateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
         appointmentStartCol.setCellValueFactory(new PropertyValueFactory<>("start"));
         appointmentEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
         appointmentCustomerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));

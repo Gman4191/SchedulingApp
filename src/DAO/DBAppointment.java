@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
@@ -33,7 +32,8 @@ public class DBAppointment {
                 LocalDateTime end = LocalDateTime.parse(resultSet.getString("End"), formatter);
                 Appointment a = new Appointment(resultSet.getInt("Appointment_ID"), resultSet.getString("Title"),
                                         resultSet.getString("Description"), resultSet.getString("Location"),
-                                        resultSet.getString("Type"), start, end, resultSet.getInt("Customer_ID"),
+                                        resultSet.getString("Type"), start.toLocalDate(), start.toLocalTime(),
+                                        end.toLocalTime(), resultSet.getInt("Customer_ID"),
                                         resultSet.getString("Customer_Name"), resultSet.getInt("User_ID"),
                                         resultSet.getString("User_Name"), resultSet.getInt("Contact_ID"),
                                         resultSet.getString("Contact_Name"));

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainMenuController">
    <children>
       <TabPane layoutX="233.0" layoutY="169.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0" tabMinHeight="40.0" tabMinWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -50,11 +50,12 @@
                               <TableColumn fx:id="appointmentTypeCol" prefWidth="77.0" text="Type" />
                               <TableColumn fx:id="appointmentDescCol" prefWidth="93.0" text="Description" />
                               <TableColumn fx:id="appointmentLocationCol" prefWidth="95.0" text="Location" />
-                              <TableColumn fx:id="appointmentContactCol" prefWidth="107.0" text="Contact" />
-                              <TableColumn fx:id="appointmentStartCol" prefWidth="106.33331298828125" text="Start Date/Time" />
-                              <TableColumn fx:id="appointmentEndCol" prefWidth="112.66668701171875" text="End Date/Time" />
-                              <TableColumn fx:id="appointmentCustomerCol" prefWidth="99.0" text="Customer" />
-                              <TableColumn fx:id="appointmentUserCol" prefWidth="83.0" text="User" />
+                              <TableColumn fx:id="appointmentContactCol" prefWidth="85.0" text="Contact" />
+                              <TableColumn fx:id="appointmentDateCol" prefWidth="70.0" text="Date" />
+                              <TableColumn fx:id="appointmentStartCol" prefWidth="89.0" text="Start Time" />
+                              <TableColumn fx:id="appointmentEndCol" prefWidth="89.0" text="End Time" />
+                              <TableColumn fx:id="appointmentCustomerCol" prefWidth="108.0" text="Customer" />
+                              <TableColumn fx:id="appointmentUserCol" prefWidth="64.0" text="User" />
                           </columns>
                         </TableView>
                         <HBox layoutX="14.0" layoutY="20.0" spacing="50.0">

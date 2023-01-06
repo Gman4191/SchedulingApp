@@ -1,6 +1,8 @@
 package Models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Appointment {
     private int id;
@@ -8,8 +10,9 @@ public class Appointment {
     private String description;
     private String location;
     private String type;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private LocalDate date;
+    private LocalTime start;
+    private LocalTime end;
     private int customerId;
     private String customerName;
     private int userId;
@@ -17,14 +20,15 @@ public class Appointment {
     private int contactId;
     private String contactName;
 
-    public Appointment(int id, String title, String description, String location, String type, LocalDateTime start,
-                       LocalDateTime end, int customerId, String customerName, int userId, String userName, int contactId, String contactName)
+    public Appointment(int id, String title, String description, String location, String type, LocalDate date, LocalTime start,
+                       LocalTime end, int customerId, String customerName, int userId, String userName, int contactId, String contactName)
     {
         this.id = id;
         this.title = title;
         this.description = description;
         this.location = location;
         this.type = type;
+        this.date = date;
         this.start = start;
         this.end = end;
         this.customerId = customerId;
@@ -45,10 +49,12 @@ public class Appointment {
     public void setLocation(String location){this.location = location;}
     public String getType(){return type;}
     public void setType(String type){this.type = type;}
-    public LocalDateTime getStart(){return start;}
-    public void setStart(LocalDateTime start){this.start = start;}
-    public LocalDateTime getEnd(){return end;}
-    public void setEnd(LocalDateTime end){this.end = end;}
+    public LocalDate getDate(){return date;}
+    public void setDate(LocalDate date){this.date = date;}
+    public LocalTime getStart(){return start;}
+    public void setStart(LocalTime start){this.start = start;}
+    public LocalTime getEnd(){return end;}
+    public void setEnd(LocalTime end){this.end = end;}
     public int getCustomerId(){return customerId;}
     public void setCustomerId(int customerId){this.customerId = customerId;}
     public String getCustomerName(){return customerName;}
