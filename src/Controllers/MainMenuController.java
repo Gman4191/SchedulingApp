@@ -11,9 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -66,6 +64,8 @@ public class MainMenuController implements Initializable {
     public TableColumn<Appointment, LocalTime> appointmentEndCol;
     public TableColumn<Appointment, String> appointmentCustomerCol;
     public TableColumn<Appointment, String> appointmentUserCol;
+    public Tab appointmentTab;
+    public TabPane tabPane;
 
     /**
      * Initialize the main menu
@@ -162,10 +162,36 @@ public class MainMenuController implements Initializable {
                 Utilities.displayMessage("Customer, " + selectedCustomer.getName() + ", was deleted.");
                 DBCustomer.deleteCustomer(selectedCustomer);
                 customerTable.setItems(DBCustomer.getAllCustomers());
+                appointmentTable.setItems(DBAppointment.getAllAppointments());
             }
         } catch(Exception e)
         {
             Utilities.displayErrorMessage(e.getMessage());
         }
+    }
+
+    public void OnAddAppointment(ActionEvent actionEvent) throws IOException {
+        Parent root = new FXMLLoader(getClass().getResource("/Views/addAppointmentView.fxml")).load();
+        Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void OnModifyAppointment(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/modifyAppointmentView.fxml"));
+        Parent root = loader.load();
+        ModifyAppointmentController controller = loader.getController();
+        loader.setController(controller);
+
+        Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    public void returnToAppointmentTab()
+    {
+        tabPane.getSelectionModel().select(appointmentTab);
     }
 }

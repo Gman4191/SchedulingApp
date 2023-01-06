@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ModifyAppointmentController">
    <children>
       <Label text="Modify Appointment" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="50.0">
          <font>
@@ -82,8 +82,8 @@
       </HBox>
       <HBox layoutX="603.0" layoutY="486.0" spacing="30.0">
          <children>
-            <Button mnemonicParsing="false" text="Save" />
-            <Button mnemonicParsing="false" text="Cancel" />
+            <Button mnemonicParsing="false" text="Save" onAction="#OnSave"/>
+            <Button mnemonicParsing="false" text="Cancel" onAction="#OnCancel"/>
          </children>
       </HBox>
    </children>

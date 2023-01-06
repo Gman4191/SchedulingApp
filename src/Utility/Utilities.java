@@ -3,6 +3,7 @@ package Utility;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+import java.time.*;
 import java.util.Optional;
 
 public class Utilities {
@@ -25,10 +26,14 @@ public class Utilities {
         return false;
     }
 
-    public static void displayMessage(String message)
-    {
+    public static void displayMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(message);
         alert.show();
+    }
+
+    public static LocalTime changeTimeZone(LocalTime time, ZoneId currentZone, ZoneId desiredZone)
+    {
+        return ZonedDateTime.of(LocalDate.now(), time, currentZone).withZoneSameInstant(desiredZone).toLocalTime();
     }
 }
