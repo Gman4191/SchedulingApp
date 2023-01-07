@@ -1,6 +1,8 @@
 package DAO;
 
 import Models.Appointment;
+import Models.Contact;
+import Models.Customer;
 import Utility.Utilities;
 import javafx.collections.ObservableList;
 import jdk.jshell.execution.Util;
@@ -13,7 +15,7 @@ import static javafx.collections.FXCollections.observableArrayList;
 
 public class DBAppointment {
     public final static String dateTimePattern = "yyyy-MM-dd HH:mm:ss";
-    public final static ZoneId databaseTimeZone = ZoneId.of("UTC");
+    public final static ZoneId databaseTimeZone = ZoneId.of("America/New_York");
 
     public static ObservableList<Appointment> getAllAppointments()
     {
@@ -31,12 +33,14 @@ public class DBAppointment {
 
             while(resultSet.next())
             {
-                LocalDateTime start = LocalDateTime.parse(resultSet.getString("Start"), formatter);
-                LocalDateTime end = LocalDateTime.parse(resultSet.getString("End"), formatter);
+                LocalDateTime appointmentStart = LocalDateTime.parse(resultSet.getString("Start"), formatter);
+                LocalDateTime appointmentEnd = LocalDateTime.parse(resultSet.getString("End"), formatter);
+                LocalTime startTime = Utilities.changeTimeZone(appointmentStart.toLocalTime(), databaseTimeZone, ZoneId.systemDefault());
+                LocalTime endTime = Utilities.changeTimeZone(appointmentEnd.toLocalTime(), databaseTimeZone, ZoneId.systemDefault());
                 Appointment a = new Appointment(resultSet.getInt("Appointment_ID"), resultSet.getString("Title"),
                                         resultSet.getString("Description"), resultSet.getString("Location"),
-                                        resultSet.getString("Type"), start.toLocalDate(), start.toLocalTime(),
-                                        end.toLocalTime(), resultSet.getInt("Customer_ID"),
+                                        resultSet.getString("Type"), appointmentStart.toLocalDate(), startTime,
+                                        endTime, resultSet.getInt("Customer_ID"),
                                         resultSet.getString("Customer_Name"), resultSet.getInt("User_ID"),
                                         resultSet.getString("User_Name"), resultSet.getInt("Contact_ID"),
                                         resultSet.getString("Contact_Name"));
@@ -77,5 +81,36 @@ public class DBAppointment {
         }
 
         return true;
+    }
+
+    public static ObservableList<Contact> getAllContacts(){
+        ObservableList<Contact> contacts = observableArrayList();
+        String query = "SELECT Contact_ID, Contact_Name, Email FROM Contacts;";
+
+        try{
+            PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
+            select.executeQuery();
+            ResultSet resultSet = select.getResultSet();
+
+            while(resultSet.next())
+            {
+                Contact c = new Contact(resultSet.getInt("Contact_ID"), resultSet.getString("Contact_Name"),
+                                        resultSet.getString("Email"));
+                contacts.add(c);
+            }
+        } catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return contacts;
+    }
+
+    public static void addAppointment(Appointment appointment)
+    {
+        String query = "INSERT INTO Appointments(Appointment_ID, Title, Description, Location, Type, Start, End, Create_Date," +
+                "Create_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) " +
+                "VALUES(null, ?, ?, ?, ? ,?, ?, curdate(), ?, curdate(), ?, ?, ?, ?);";
+        
     }
 }

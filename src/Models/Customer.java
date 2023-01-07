@@ -153,4 +153,9 @@ public class Customer {
      * @param country the customer country name to set
      */
     public void setCountry(String country){this.country = country;}
+
+    @Override
+    public String toString(){
+        return this.name;
+    }
 }

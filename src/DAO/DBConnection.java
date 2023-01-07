@@ -12,7 +12,7 @@ public class DBConnection {
     private static final String databaseName = "client_schedule";
     private static final String MYSQLJBCDRIVER = "com.mysql.cj.jdbc.Driver";
 
-    private static final String jdbcURL = protocol + vendorName + serverIp + databaseName + "?connectionTimeZone=SERVER";
+    private static final String jdbcURL = protocol + vendorName + serverIp + databaseName;
 
     private static Connection conn = null;
 

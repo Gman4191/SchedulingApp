@@ -72,8 +72,9 @@ public class LoginController implements Initializable {
      */
     public void OnLogin(ActionEvent actionEvent) throws IOException {
         try{
-            DBLogin.verifyUser(userNameField.getText(), passwordField.getText());
+            int id = DBLogin.verifyUser(userNameField.getText(), passwordField.getText());
             User.setUserName(userNameField.getText());
+            User.setId(id);
         } catch(Exception e)
         {
             Alert alert = new Alert(Alert.AlertType.ERROR, Language.getLanguage().getString(e.getMessage()));

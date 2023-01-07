@@ -19,6 +19,9 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
@@ -60,8 +63,8 @@ public class MainMenuController implements Initializable {
     public TableColumn<Appointment, String> appointmentLocationCol;
     public TableColumn<Appointment, String> appointmentContactCol;
     public TableColumn<Appointment, LocalDate> appointmentDateCol;
-    public TableColumn<Appointment, LocalTime> appointmentStartCol;
-    public TableColumn<Appointment, LocalTime> appointmentEndCol;
+    public TableColumn<Appointment, String> appointmentStartCol;
+    public TableColumn<Appointment, String> appointmentEndCol;
     public TableColumn<Appointment, String> appointmentCustomerCol;
     public TableColumn<Appointment, String> appointmentUserCol;
     public Tab appointmentTab;
@@ -95,8 +98,10 @@ public class MainMenuController implements Initializable {
         appointmentLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
         appointmentTypeCol.setCellValueFactory((new PropertyValueFactory<>("type")));
         appointmentDateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
-        appointmentStartCol.setCellValueFactory(new PropertyValueFactory<>("start"));
-        appointmentEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+        appointmentStartCol.setCellValueFactory(s -> new SimpleStringProperty(s.getValue().getStart().toString() + " " +
+                ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.ENGLISH)));
+        appointmentEndCol.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getEnd().toString() + " " +
+                ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.ENGLISH)));
         appointmentCustomerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         appointmentUserCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
         appointmentContactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));

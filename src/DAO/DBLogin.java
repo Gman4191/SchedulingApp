@@ -9,8 +9,9 @@ public class DBLogin {
      * @param userName the user's name
      * @param password the user's password
      * @throws Exception if the user's credentials are rejected
+     * @return the id of the found user
      */
-    public static void verifyUser(String userName, String password) throws Exception
+    public static int verifyUser(String userName, String password) throws Exception
     {
         ResultSet resultSet;
         String query = "SELECT * FROM users WHERE User_Name LIKE ? AND Password LIKE ?";
@@ -26,11 +27,13 @@ public class DBLogin {
         catch(SQLException e)
         {
             e.printStackTrace();
-            return;
+            return -1;
         }
 
         // If a user is not found, reject the user'ss credentials
         if(!resultSet.next())
             throw new Exception("loginError");
+
+        return resultSet.getInt("User_ID");
     }
 }

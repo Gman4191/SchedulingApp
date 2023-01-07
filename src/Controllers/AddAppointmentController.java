@@ -1,6 +1,11 @@
 package Controllers;
 
 import DAO.DBAppointment;
+import DAO.DBCustomer;
+import Models.Appointment;
+import Models.Contact;
+import Models.Customer;
+import Models.User;
 import Utility.Utilities;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,16 +13,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static javafx.collections.FXCollections.observableArrayList;
@@ -36,13 +41,21 @@ public class AddAppointmentController implements Initializable {
     public TextField locationField;
     public TextField titleField;
     public TextField idField;
+    public ComboBox<Customer> customerBox;
+    public ComboBox<Contact> contactBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Initialize the appointment type options
         ObservableList<String> types = observableArrayList();
         types.addAll("Tire Installation", "Tire Rotation", "Tire Repair", "Battery Replacement", "Oil Change");
         typeBox.setItems(types);
 
+        // Initialize the customer options
+        customerBox.setItems(DBCustomer.getAllCustomers());
+
+        //Initialize the contact options
+        contactBox.setItems(DBAppointment.getAllContacts());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         LocalTime businessEnd = Utilities.changeTimeZone(LocalTime.parse(businessEndTime, formatter), businessZone, ZoneId.systemDefault());
         LocalTime businessTime = Utilities.changeTimeZone(LocalTime.parse(businessStartTime, formatter), businessZone, ZoneId.systemDefault());
@@ -54,12 +67,36 @@ public class AddAppointmentController implements Initializable {
 
         // Initialize the start and end time selection boxes
         startBox.setItems(appointmentTimes);
+        startBox.setCellFactory(listView -> new ListCell<>() {
+            @Override
+            protected void updateItem(LocalTime time, boolean isEmpty) {
+                super.updateItem(time, isEmpty);
+                if (isEmpty || time == null) setText(null);
+                else setText(time + " " +
+                        ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.ENGLISH));
+            }
+        });
         endBox.setItems(appointmentTimes);
+        endBox.setCellFactory(listView -> new ListCell<>() {
+            @Override
+            protected void updateItem(LocalTime time, boolean isEmpty) {
+                super.updateItem(time, isEmpty);
+                if (isEmpty || time == null) setText(null);
+                else setText(time + " " +
+                        ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.ENGLISH));
+            }
+        });
     }
 
     public void OnSave(ActionEvent actionEvent) throws IOException {
         if(!validateData())
             return;
+
+        LocalDate appointmentDate = LocalDate.parse(dateField.getEditor().getText(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        Appointment appointment = new Appointment(0, titleField.getText(), descriptionField.getText(), locationField.getText(),
+                                            typeBox.getValue(), appointmentDate, startBox.getValue(), endBox.getValue(),
+                                            customerBox.getValue().getId(), customerBox.getValue().getName(), User.getId(), User.getUserName(),
+                                            contactBox.getValue().getId(), contactBox.getValue().getName());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/mainMenuView.fxml"));
         Parent root = loader.load();
@@ -100,7 +137,14 @@ public class AddAppointmentController implements Initializable {
             if(typeBox.getSelectionModel().isEmpty())
                 throw new Exception("The appointment type must be selected");
 
-            if(dateField.getValue() == null)
+            if(customerBox.getSelectionModel().isEmpty())
+                throw new Exception("The customer associated with the appointment must be selected");
+
+            // Validate the date, whether entered via text or selected through the calendar
+            if(!dateField.getEditor().getText().isEmpty())
+            {
+                LocalDate.parse(dateField.getEditor().getText(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            }else if(dateField.getValue() == null)
                 throw new Exception("The appointment date must be selected");
 
             if(startBox.getSelectionModel().isEmpty())
@@ -114,6 +158,9 @@ public class AddAppointmentController implements Initializable {
 
             if(!DBAppointment.validateSelectedTimes(dateField.getValue(), startBox.getValue(), endBox.getValue()))
                 throw new Exception("The selected time overlaps with another appointment. Please try again");
+        } catch(DateTimeParseException e){
+            Utilities.displayErrorMessage("The entered date must be of the format 'MM/dd/yyyy'");
+            return false;
         } catch(Exception e){
             Utilities.displayErrorMessage(e.getMessage());
             return false;
