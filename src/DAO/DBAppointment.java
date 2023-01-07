@@ -3,6 +3,7 @@ package DAO;
 import Models.Appointment;
 import Models.Contact;
 import Models.Customer;
+import Models.User;
 import Utility.Utilities;
 import javafx.collections.ObservableList;
 import jdk.jshell.execution.Util;
@@ -61,7 +62,6 @@ public class DBAppointment {
 
         try{
             appointmentStart = Utilities.changeTimeZone(appointmentStart, ZoneId.systemDefault(), databaseTimeZone);
-            System.out.println(appointmentStart);
             appointmentEnd = Utilities.changeTimeZone(appointmentEnd, ZoneId.systemDefault(), databaseTimeZone);
             LocalDateTime start = LocalDateTime.of(date, appointmentStart);
             LocalDateTime end = LocalDateTime.of(date, appointmentEnd);
@@ -109,8 +109,31 @@ public class DBAppointment {
     public static void addAppointment(Appointment appointment)
     {
         String query = "INSERT INTO Appointments(Appointment_ID, Title, Description, Location, Type, Start, End, Create_Date," +
-                "Create_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) " +
-                "VALUES(null, ?, ?, ?, ? ,?, ?, curdate(), ?, curdate(), ?, ?, ?, ?);";
-        
+                "Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) " +
+                "VALUES(null, ?, ?, ?, ? ,?, ?, curdate(), ?, CURRENT_TIMESTAMP, ?, ?, ?, ?);";
+
+        try{
+            LocalTime appointmentStart = Utilities.changeTimeZone(appointment.getStart(), ZoneId.systemDefault(), databaseTimeZone);
+            LocalTime appointmentEnd = Utilities.changeTimeZone(appointment.getEnd(), ZoneId.systemDefault(), databaseTimeZone);
+            LocalDateTime start = LocalDateTime.of(appointment.getDate(), appointmentStart);
+            LocalDateTime end = LocalDateTime.of(appointment.getDate(), appointmentEnd);
+            PreparedStatement insert = DBConnection.getConnection().prepareStatement(query);
+            insert.setString(1, appointment.getTitle());
+            insert.setString(2, appointment.getDescription());
+            insert.setString(3, appointment.getLocation());
+            insert.setString(4, appointment.getType());
+            insert.setTimestamp(5, Timestamp.valueOf(start));
+            insert.setTimestamp(6, Timestamp.valueOf(end));
+            insert.setString(7, User.getUserName());
+            insert.setString(8, User.getUserName());
+            insert.setInt(9, appointment.getCustomerId());
+            insert.setInt(10, appointment.getUserId());
+            insert.setInt(11, appointment.getContactId());
+
+            insert.execute();
+        } catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

@@ -27,12 +27,7 @@ import java.util.ResourceBundle;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
-public class AddAppointmentController implements Initializable {
-    private final static String pattern = "HH:mm";
-    private final static ZoneId businessZone = ZoneId.of("America/New_York");
-    private final static String businessStartTime = "08:00";
-    private final static String businessEndTime = "22:00";
-
+public class AddAppointmentController extends BaseAppointmentControl implements Initializable {
     public ComboBox<LocalTime> endBox;
     public ComboBox<LocalTime> startBox;
     public DatePicker dateField;
@@ -92,12 +87,24 @@ public class AddAppointmentController implements Initializable {
         if(!validateData())
             return;
 
-        LocalDate appointmentDate = LocalDate.parse(dateField.getEditor().getText(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        // Get the selected appointment date
+        LocalDate appointmentDate;
+        if(dateField.getValue() == null)
+            appointmentDate = LocalDate.parse(dateField.getEditor().getText(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        else
+            appointmentDate = dateField.getValue();
+
+        // Create a new appointment
         Appointment appointment = new Appointment(0, titleField.getText(), descriptionField.getText(), locationField.getText(),
                                             typeBox.getValue(), appointmentDate, startBox.getValue(), endBox.getValue(),
                                             customerBox.getValue().getId(), customerBox.getValue().getName(), User.getId(), User.getUserName(),
                                             contactBox.getValue().getId(), contactBox.getValue().getName());
 
+        // Add the appointment to the database
+        DBAppointment.addAppointment(appointment);
+
+
+        // Return to the main menu
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/mainMenuView.fxml"));
         Parent root = loader.load();
         MainMenuController controller = loader.getController();
@@ -124,6 +131,7 @@ public class AddAppointmentController implements Initializable {
     }
 
     private boolean validateData(){
+        LocalDate appointmentDate;
         try{
             if(titleField.getText().isEmpty())
                 throw new Exception("The appointment title can not be blank");
@@ -140,12 +148,18 @@ public class AddAppointmentController implements Initializable {
             if(customerBox.getSelectionModel().isEmpty())
                 throw new Exception("The customer associated with the appointment must be selected");
 
+            if(contactBox.getSelectionModel().isEmpty())
+                throw new Exception("The contact associated with the appointment must be selected");
+
             // Validate the date, whether entered via text or selected through the calendar
-            if(!dateField.getEditor().getText().isEmpty())
-            {
-                LocalDate.parse(dateField.getEditor().getText(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-            }else if(dateField.getValue() == null)
-                throw new Exception("The appointment date must be selected");
+            if(dateField.getValue() == null) {
+                if (dateField.getEditor().getText().isEmpty())
+                    throw new Exception("The appointment date must be selected");
+                else
+                    appointmentDate = LocalDate.parse(dateField.getEditor().getText(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            } else {
+                appointmentDate = dateField.getValue();
+            }
 
             if(startBox.getSelectionModel().isEmpty())
                 throw new Exception("The appointment start time must be selected");
@@ -156,7 +170,7 @@ public class AddAppointmentController implements Initializable {
             if(startBox.getValue().isAfter(endBox.getValue()))
                 throw new Exception("The appointment start time must be before the end time");
 
-            if(!DBAppointment.validateSelectedTimes(dateField.getValue(), startBox.getValue(), endBox.getValue()))
+            if(!DBAppointment.validateSelectedTimes(appointmentDate, startBox.getValue(), endBox.getValue()))
                 throw new Exception("The selected time overlaps with another appointment. Please try again");
         } catch(DateTimeParseException e){
             Utilities.displayErrorMessage("The entered date must be of the format 'MM/dd/yyyy'");
