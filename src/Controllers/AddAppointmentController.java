@@ -42,15 +42,14 @@ public class AddAppointmentController extends BaseAppointmentControl implements 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize the appointment type options
-        ObservableList<String> types = observableArrayList();
-        types.addAll("Tire Installation", "Tire Rotation", "Tire Repair", "Battery Replacement", "Oil Change");
-        typeBox.setItems(types);
+        typeBox.setItems(getTypes());
 
         // Initialize the customer options
-        customerBox.setItems(DBCustomer.getAllCustomers());
+        customerBox.setItems(getCustomers());
 
         //Initialize the contact options
-        contactBox.setItems(DBAppointment.getAllContacts());
+        contactBox.setItems(getContacts());
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         LocalTime businessEnd = Utilities.changeTimeZone(LocalTime.parse(businessEndTime, formatter), businessZone, ZoneId.systemDefault());
         LocalTime businessTime = Utilities.changeTimeZone(LocalTime.parse(businessStartTime, formatter), businessZone, ZoneId.systemDefault());
@@ -84,6 +83,7 @@ public class AddAppointmentController extends BaseAppointmentControl implements 
     }
 
     public void OnSave(ActionEvent actionEvent) throws IOException {
+        // Validate the entered appointment data
         if(!validateData())
             return;
 
@@ -136,11 +136,11 @@ public class AddAppointmentController extends BaseAppointmentControl implements 
             if(titleField.getText().isEmpty())
                 throw new Exception("The appointment title can not be blank");
 
-            if(descriptionField.getText().isEmpty())
-                throw new Exception("The appointment description can not be blank");
-
             if(locationField.getText().isEmpty())
                 throw new Exception("The appointment location can not be blank");
+
+            if(descriptionField.getText().isEmpty())
+                throw new Exception("The appointment description can not be blank");
 
             if(typeBox.getSelectionModel().isEmpty())
                 throw new Exception("The appointment type must be selected");

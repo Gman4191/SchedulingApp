@@ -2,8 +2,10 @@ package Controllers;
 
 import DAO.DBAppointment;
 import DAO.DBCustomer;
+import Models.Appointment;
 import Models.Contact;
 import Models.Customer;
+import Models.User;
 import Utility.Utilities;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,15 +44,14 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize the appointment type options
-        ObservableList<String> types = observableArrayList();
-        types.addAll("Tire Installation", "Tire Rotation", "Tire Repair", "Battery Replacement", "Oil Change");
-        typeBox.setItems(types);
+        typeBox.setItems(getTypes());
 
         // Initialize the customer options
-        customerBox.setItems(DBCustomer.getAllCustomers());
+        customerBox.setItems(getCustomers());
 
         //Initialize the contact options
-        contactBox.setItems(DBAppointment.getAllContacts());
+        contactBox.setItems(getContacts());
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         LocalTime businessEnd = Utilities.changeTimeZone(LocalTime.parse(businessEndTime, formatter), businessZone, ZoneId.systemDefault());
         LocalTime businessTime = Utilities.changeTimeZone(LocalTime.parse(businessStartTime, formatter), businessZone, ZoneId.systemDefault());
@@ -84,6 +85,25 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
     }
 
     public void OnSave(ActionEvent actionEvent) throws IOException {
+        // Validate the entered data
+        if(!validateData())
+            return;
+
+        // Get the selected appointment date
+        LocalDate appointmentDate;
+        if(dateField.getValue() == null)
+            appointmentDate = LocalDate.parse(dateField.getEditor().getText(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        else
+            appointmentDate = dateField.getValue();
+
+        // Create a new appointment
+        Appointment appointment = new Appointment(0, titleField.getText(), descriptionField.getText(), locationField.getText(),
+                typeBox.getValue(), appointmentDate, startBox.getValue(), endBox.getValue(),
+                customerBox.getValue().getId(), customerBox.getValue().getName(), User.getId(), User.getUserName(),
+                contactBox.getValue().getId(), contactBox.getValue().getName());
+        DBAppointment.updateAppointment(appointment);
+
+        // Return to the main menu appointment tab
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/mainMenuView.fxml"));
         Parent root = loader.load();
         MainMenuController controller = loader.getController();
@@ -117,19 +137,19 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
             if(titleField.getText().isEmpty())
                 throw new Exception("The appointment title can not be blank");
 
-            if(descriptionField.getText().isEmpty())
-                throw new Exception("The appointment description can not be blank");
-
             if(locationField.getText().isEmpty())
                 throw new Exception("The appointment location can not be blank");
 
-            if(typeBox.getSelectionModel().isEmpty())
+            if(descriptionField.getText().isEmpty())
+                throw new Exception("The appointment description can not be blank");
+
+            if(typeBox.getValue() == null && typeBox.getSelectionModel().isEmpty())
                 throw new Exception("The appointment type must be selected");
 
-            if(customerBox.getSelectionModel().isEmpty())
+            if(customerBox.getValue() == null && customerBox.getSelectionModel().isEmpty())
                 throw new Exception("The customer associated with the appointment must be selected");
 
-            if(contactBox.getSelectionModel().isEmpty())
+            if(contactBox.getValue() == null && contactBox.getSelectionModel().isEmpty())
                 throw new Exception("The contact associated with the appointment must be selected");
 
             // Validate the date, whether entered via text or selected through the calendar
@@ -151,7 +171,8 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
             if(startBox.getValue().isAfter(endBox.getValue()))
                 throw new Exception("The appointment start time must be before the end time");
 
-            if(!DBAppointment.validateSelectedTimes(appointmentDate, startBox.getValue(), endBox.getValue()))
+            if(!DBAppointment.validateSelectedTimes(Integer.parseInt(idField.getText()), appointmentDate,
+                                                                                startBox.getValue(), endBox.getValue()))
                 throw new Exception("The selected time overlaps with another appointment. Please try again");
         } catch(DateTimeParseException e){
             Utilities.displayErrorMessage("The entered date must be of the format 'MM/dd/yyyy'");
@@ -161,5 +182,29 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
             return false;
         }
         return true;
+    }
+
+    public void setAppointmentData(Appointment selectedAppointment)
+    {
+        idField.setText( ((Integer)selectedAppointment.getId()).toString() );
+        titleField.setText(selectedAppointment.getTitle());
+        descriptionField.setText(selectedAppointment.getDescription());
+        locationField.setText(selectedAppointment.getLocation());
+        typeBox.setValue(selectedAppointment.getType());
+        dateField.setValue(selectedAppointment.getDate());
+        startBox.setValue(selectedAppointment.getStart());
+        endBox.setValue(selectedAppointment.getEnd());
+
+        Customer customer = getCustomer(selectedAppointment.getCustomerId());
+        ObservableList<Customer> cs = getCustomers();
+        int i = 0;
+        for(; i < cs.size(); i++)
+            if(cs.get(i).getId() == selectedAppointment.getId())
+                break;
+        customerBox.setItems(cs);
+        customerBox.getSelectionModel().select(i);
+
+        Contact contact = getContact(selectedAppointment.getContactId());
+        contactBox.setValue(contact);
     }
 }

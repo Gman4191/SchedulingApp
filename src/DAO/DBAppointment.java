@@ -2,11 +2,9 @@ package DAO;
 
 import Models.Appointment;
 import Models.Contact;
-import Models.Customer;
 import Models.User;
 import Utility.Utilities;
 import javafx.collections.ObservableList;
-import jdk.jshell.execution.Util;
 
 import java.sql.*;
 import java.time.*;
@@ -83,6 +81,37 @@ public class DBAppointment {
         return true;
     }
 
+    public static boolean validateSelectedTimes(int id, LocalDate date, LocalTime appointmentStart, LocalTime appointmentEnd)
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
+        String query = "SELECT Appointment_ID, Start, End FROM Appointments WHERE Appointment_ID != ? AND ((Start BETWEEN ? AND ?) OR (END BETWEEN ? AND ?));";
+
+        try{
+            appointmentStart = Utilities.changeTimeZone(appointmentStart, ZoneId.systemDefault(), databaseTimeZone);
+            appointmentEnd = Utilities.changeTimeZone(appointmentEnd, ZoneId.systemDefault(), databaseTimeZone);
+            LocalDateTime start = LocalDateTime.of(date, appointmentStart);
+            LocalDateTime end = LocalDateTime.of(date, appointmentEnd);
+            PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
+            select.setInt(1, id);
+            select.setTimestamp(2, Timestamp.valueOf(start));
+            select.setTimestamp(3, Timestamp.valueOf(end));
+            select.setTimestamp(4, Timestamp.valueOf(start));
+            select.setTimestamp(5, Timestamp.valueOf(end));
+            select.executeQuery();
+            ResultSet resultSet = select.getResultSet();
+
+            if(resultSet.next()) {
+                System.out.println(resultSet.getInt("Appointment_ID"));
+                return false;
+            }
+        } catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
     public static ObservableList<Contact> getAllContacts(){
         ObservableList<Contact> contacts = observableArrayList();
         String query = "SELECT Contact_ID, Contact_Name, Email FROM Contacts;";
@@ -131,6 +160,36 @@ public class DBAppointment {
             insert.setInt(11, appointment.getContactId());
 
             insert.execute();
+        } catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateAppointment(Appointment newAppointment)
+    {
+        String query = "UPDATE Appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, " +
+                "Last_Update = CURRENT_TIMESTAMP, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? " +
+                "WHERE Appointment_ID = ?;";
+        try{
+            LocalTime appointmentStart = Utilities.changeTimeZone(newAppointment.getStart(), ZoneId.systemDefault(), databaseTimeZone);
+            LocalTime appointmentEnd = Utilities.changeTimeZone(newAppointment.getEnd(), ZoneId.systemDefault(), databaseTimeZone);
+            LocalDateTime start = LocalDateTime.of(newAppointment.getDate(), appointmentStart);
+            LocalDateTime end = LocalDateTime.of(newAppointment.getDate(), appointmentEnd);
+            PreparedStatement update = DBConnection.getConnection().prepareStatement(query);
+            update.setString(1, newAppointment.getTitle());
+            update.setString(2, newAppointment.getDescription());
+            update.setString(3, newAppointment.getLocation());
+            update.setString(4, newAppointment.getType());
+            update.setTimestamp(5, Timestamp.valueOf(start));
+            update.setTimestamp(6, Timestamp.valueOf(end));
+            update.setString(7, User.getUserName());
+            update.setInt(8, newAppointment.getCustomerId());
+            update.setInt(9, newAppointment.getUserId());
+            update.setInt(10, newAppointment.getContactId());
+            update.setInt(11, newAppointment.getId());
+
+            update.execute();
         } catch(SQLException e)
         {
             e.printStackTrace();

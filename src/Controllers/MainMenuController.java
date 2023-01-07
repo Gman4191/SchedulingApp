@@ -16,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.server.ExportException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -188,6 +189,19 @@ public class MainMenuController implements Initializable {
         Parent root = loader.load();
         ModifyAppointmentController controller = loader.getController();
         loader.setController(controller);
+
+        try{
+            Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+
+            if(selectedAppointment == null)
+                throw new Exception("An appointment must be selected for modification");
+
+            controller.setAppointmentData(selectedAppointment);
+        } catch(Exception e)
+        {
+            Utilities.displayErrorMessage(e.getMessage());
+            return;
+        }
 
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
