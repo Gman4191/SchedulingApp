@@ -1,7 +1,6 @@
 package Controllers;
 
 import DAO.DBAppointment;
-import DAO.DBCustomer;
 import Models.Appointment;
 import Models.Contact;
 import Models.Customer;
@@ -47,9 +46,11 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
         typeBox.setItems(getTypes());
 
         // Initialize the customer options
+        setCustomers();
         customerBox.setItems(getCustomers());
 
         //Initialize the contact options
+        setContacts();
         contactBox.setItems(getContacts());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
@@ -97,7 +98,7 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
             appointmentDate = dateField.getValue();
 
         // Create a new appointment
-        Appointment appointment = new Appointment(0, titleField.getText(), descriptionField.getText(), locationField.getText(),
+        Appointment appointment = new Appointment(Integer.parseInt(idField.getText()), titleField.getText(), descriptionField.getText(), locationField.getText(),
                 typeBox.getValue(), appointmentDate, startBox.getValue(), endBox.getValue(),
                 customerBox.getValue().getId(), customerBox.getValue().getName(), User.getId(), User.getUserName(),
                 contactBox.getValue().getId(), contactBox.getValue().getName());
@@ -133,6 +134,9 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
 
     private boolean validateData(){
         LocalDate appointmentDate;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        LocalTime businessEnd = Utilities.changeTimeZone(LocalTime.parse(businessEndTime, formatter), businessZone, ZoneId.systemDefault());
+        LocalTime businessStart = Utilities.changeTimeZone(LocalTime.parse(businessStartTime, formatter), businessZone, ZoneId.systemDefault());
         try{
             if(titleField.getText().isEmpty())
                 throw new Exception("The appointment title can not be blank");
@@ -162,11 +166,24 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
                 appointmentDate = dateField.getValue();
             }
 
-            if(startBox.getSelectionModel().isEmpty())
-                throw new Exception("The appointment start time must be selected");
+            if(startBox.getSelectionModel().isEmpty()) {
+                if (startBox.getValue().isBefore(businessStart) || startBox.getValue().isAfter(businessEnd)) {
+                    throw new Exception("Select an appointment start time that is between the business hours(" +
+                            businessStart + "-" + businessEnd + ")");
+                }
+                else {
+                    throw new Exception("The appointment start time must be selected");
+                }
+            }
 
-            if(endBox.getSelectionModel().isEmpty())
-                throw new Exception("The appointment end time must be selected");
+            if(endBox.getSelectionModel().isEmpty()) {
+                if(endBox.getValue().isBefore(businessStart) || endBox.getValue().isAfter(businessEnd)){
+                    throw new Exception("Select an appointment end time that is between the business hours(" +
+                                        businessStart + "-" + businessEnd + ")");
+                }else {
+                    throw new Exception("The appointment end time must be selected");
+                }
+            }
 
             if(startBox.getValue().isAfter(endBox.getValue()))
                 throw new Exception("The appointment start time must be before the end time");
@@ -195,16 +212,17 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
         startBox.setValue(selectedAppointment.getStart());
         endBox.setValue(selectedAppointment.getEnd());
 
-        Customer customer = getCustomer(selectedAppointment.getCustomerId());
-        ObservableList<Customer> cs = getCustomers();
         int i = 0;
-        for(; i < cs.size(); i++)
-            if(cs.get(i).getId() == selectedAppointment.getId())
+        for(; i < customers.size(); i++)
+            if(customers.get(i).getId() == selectedAppointment.getCustomerId())
                 break;
-        customerBox.setItems(cs);
+
         customerBox.getSelectionModel().select(i);
 
-        Contact contact = getContact(selectedAppointment.getContactId());
-        contactBox.setValue(contact);
+        for(i = 0; i < contacts.size(); i++)
+            if(contacts.get(i).getId() == selectedAppointment.getContactId())
+                break;
+
+        contactBox.getSelectionModel().select(i);
     }
 }

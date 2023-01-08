@@ -1,6 +1,7 @@
 package Controllers;
 
 import DAO.DBAppointment;
+import DAO.DBConnection;
 import DAO.DBCustomer;
 import Models.Contact;
 import Models.Customer;
@@ -13,6 +14,7 @@ import static javafx.collections.FXCollections.observableArrayList;
 public class BaseAppointmentControl {
     protected final static String pattern = "HH:mm";
     protected final static ZoneId businessZone = ZoneId.of("America/New_York");
+    protected final static ZoneId databaseZone = ZoneId.of("UTC");
     protected final static String businessStartTime = "08:00";
     protected final static String businessEndTime = "22:00";
 
@@ -32,12 +34,19 @@ public class BaseAppointmentControl {
     {
         return customers;
     }
-
+    protected static void setCustomers()
+    {
+        customers = DBCustomer.getAllCustomers();
+    }
     protected static ObservableList<Contact> getContacts()
     {
         return contacts;
     }
 
+    protected static void setContacts()
+    {
+        contacts = DBAppointment.getAllContacts();
+    }
     public static Customer getCustomer(int customerId)
     {
         for(Customer c : DBCustomer.getAllCustomers())

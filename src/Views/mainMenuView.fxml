@@ -60,20 +60,20 @@
                         </TableView>
                         <HBox layoutX="14.0" layoutY="20.0" spacing="50.0">
                            <children>
-                              <RadioButton fx:id="allButton" mnemonicParsing="false" selected="true" text="All">
+                              <RadioButton fx:id="allButton" mnemonicParsing="false" selected="true" text="All" onAction="#filterByAll">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="AppointmentMode" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton fx:id="monthButton" mnemonicParsing="false" text="Monthly" toggleGroup="$AppointmentMode" />
-                              <RadioButton fx:id="weekButton" mnemonicParsing="false" text="Weekly" toggleGroup="$AppointmentMode" />
+                              <RadioButton fx:id="monthButton" mnemonicParsing="false" text="Monthly" toggleGroup="$AppointmentMode" onAction="#filterByMonth"/>
+                              <RadioButton fx:id="weekButton" mnemonicParsing="false" text="Weekly" toggleGroup="$AppointmentMode" onAction="#filterByWeek"/>
                            </children>
                         </HBox>
                         <HBox spacing="30.0" AnchorPane.leftAnchor="600.0" AnchorPane.topAnchor="450.0">
                            <children>
                               <Button mnemonicParsing="false" text="Add" onAction="#OnAddAppointment"/>
                               <Button mnemonicParsing="false" text="Modify" onAction="#OnModifyAppointment"/>
-                              <Button mnemonicParsing="false" text="Delete" />
+                              <Button mnemonicParsing="false" text="Delete" onAction="#OnDeleteAppointment"/>
                            </children>
                         </HBox>
                      </children>

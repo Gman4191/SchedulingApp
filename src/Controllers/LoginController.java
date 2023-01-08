@@ -1,8 +1,10 @@
 package Controllers;
 
 import DAO.DBLogin;
+import Models.Appointment;
 import Models.User;
 import Utility.Language;
+import Utility.Utilities;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +15,10 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static javafx.collections.FXCollections.observableArrayList;
@@ -62,7 +67,7 @@ public class LoginController implements Initializable {
         languages.addAll(new Language("en"), new Language("fr"));
         languageBox.setItems(languages);
         languageBox.setValue(languages.get(0));
-        locationLabel.setText(ZoneId.systemDefault().toString());
+        locationLabel.setText(ZoneId.systemDefault().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
     }
 
     /**
@@ -75,6 +80,7 @@ public class LoginController implements Initializable {
             int id = DBLogin.verifyUser(userNameField.getText(), passwordField.getText());
             User.setUserName(userNameField.getText());
             User.setId(id);
+            checkUpcomingAppointments();
         } catch(Exception e)
         {
             Alert alert = new Alert(Alert.AlertType.ERROR, Language.getLanguage().getString(e.getMessage()));
@@ -104,6 +110,20 @@ public class LoginController implements Initializable {
         userNameField.setPromptText(Language.getLanguage().getString("userNameField"));
         passwordLabel.setText(Language.getLanguage().getString("password"));
         passwordField.setPromptText(Language.getLanguage().getString("passwordField"));
+        locationLabel.setText(ZoneId.systemDefault().getDisplayName(TextStyle.FULL, Language.getLanguage().getLocale()));
     }
 
+    public void checkUpcomingAppointments()
+    {
+        Appointment a = DBLogin.getUpcomingAppointment(LocalDateTime.now());
+        if(a != null)
+        {
+            Utilities.displayMessage(Language.getLanguage().getString("a1") + " " + a.getId() + " " +
+                    Language.getLanguage().getString("a2") + " " + a.getDate() +
+                    Language.getLanguage().getString("a3") + " " + a.getStart());
+        } else
+        {
+            Utilities.displayMessage(Language.getLanguage().getString("noAppointments"));
+        }
+    }
 }

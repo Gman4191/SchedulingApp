@@ -16,12 +16,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
-import java.rmi.server.ExportException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -70,6 +69,9 @@ public class MainMenuController implements Initializable {
     public TableColumn<Appointment, String> appointmentUserCol;
     public Tab appointmentTab;
     public TabPane tabPane;
+    public RadioButton allButton;
+    public RadioButton monthButton;
+    public RadioButton weekButton;
 
     /**
      * Initialize the main menu
@@ -212,5 +214,44 @@ public class MainMenuController implements Initializable {
     public void returnToAppointmentTab()
     {
         tabPane.getSelectionModel().select(appointmentTab);
+    }
+
+    public void OnDeleteAppointment(ActionEvent actionEvent) {
+        try{
+            Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+
+            if(selectedAppointment == null)
+                throw new Exception("An appointment must be selected for deletion");
+
+            if(Utilities.displayConfirmationMessage("Are you sure you want to cancel the " + selectedAppointment.getType() +
+                                                    " appointment no." + selectedAppointment.getId()))
+            {
+                DBAppointment.deleteAppointment(selectedAppointment);
+                Utilities.displayMessage(selectedAppointment.getType() + " appointment no." + selectedAppointment.getId() +
+                        " has been cancelled");
+                appointmentTable.setItems(DBAppointment.getAllAppointments());
+            }
+        } catch(Exception e)
+        {
+            Utilities.displayErrorMessage(e.getMessage());
+        }
+    }
+
+    public void filterByAll(ActionEvent actionEvent) {
+        appointmentTable.setItems(DBAppointment.getAllAppointments());
+    }
+
+    public void filterByMonth(ActionEvent actionEvent) {
+        LocalDate monthStart = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate monthEnd = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+
+        appointmentTable.setItems(DBAppointment.getFilteredAppointments(monthStart, monthEnd));
+    }
+
+    public void filterByWeek(ActionEvent actionEvent) {
+        LocalDate weekStart = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+        LocalDate weekEnd = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
+
+        appointmentTable.setItems(DBAppointment.getFilteredAppointments(weekStart, weekEnd));
     }
 }

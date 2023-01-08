@@ -1,7 +1,6 @@
 package Controllers;
 
 import DAO.DBAppointment;
-import DAO.DBCustomer;
 import Models.Appointment;
 import Models.Contact;
 import Models.Customer;
@@ -45,9 +44,11 @@ public class AddAppointmentController extends BaseAppointmentControl implements 
         typeBox.setItems(getTypes());
 
         // Initialize the customer options
+        setCustomers();
         customerBox.setItems(getCustomers());
 
         //Initialize the contact options
+        setContacts();
         contactBox.setItems(getContacts());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
