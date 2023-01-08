@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -9,8 +13,10 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainMenuController">
    <children>
       <TabPane fx:id="tabPane" layoutX="233.0" layoutY="169.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0" tabMinHeight="40.0" tabMinWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -60,20 +66,20 @@
                         </TableView>
                         <HBox layoutX="14.0" layoutY="20.0" spacing="50.0">
                            <children>
-                              <RadioButton fx:id="allButton" mnemonicParsing="false" selected="true" text="All" onAction="#filterByAll">
+                              <RadioButton fx:id="allButton" mnemonicParsing="false" onAction="#filterByAll" selected="true" text="All">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="AppointmentMode" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton fx:id="monthButton" mnemonicParsing="false" text="Monthly" toggleGroup="$AppointmentMode" onAction="#filterByMonth"/>
-                              <RadioButton fx:id="weekButton" mnemonicParsing="false" text="Weekly" toggleGroup="$AppointmentMode" onAction="#filterByWeek"/>
+                              <RadioButton fx:id="monthButton" mnemonicParsing="false" onAction="#filterByMonth" text="Monthly" toggleGroup="$AppointmentMode" />
+                              <RadioButton fx:id="weekButton" mnemonicParsing="false" onAction="#filterByWeek" text="Weekly" toggleGroup="$AppointmentMode" />
                            </children>
                         </HBox>
                         <HBox spacing="30.0" AnchorPane.leftAnchor="600.0" AnchorPane.topAnchor="450.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Add" onAction="#OnAddAppointment"/>
-                              <Button mnemonicParsing="false" text="Modify" onAction="#OnModifyAppointment"/>
-                              <Button mnemonicParsing="false" text="Delete" onAction="#OnDeleteAppointment"/>
+                              <Button mnemonicParsing="false" onAction="#OnAddAppointment" text="Add" />
+                              <Button mnemonicParsing="false" onAction="#OnModifyAppointment" text="Modify" />
+                              <Button mnemonicParsing="false" onAction="#OnDeleteAppointment" text="Delete" />
                            </children>
                         </HBox>
                      </children>
@@ -82,7 +88,95 @@
           </Tab>
             <Tab text="Reports">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TabPane prefHeight="464.0" prefWidth="881.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <tabs>
+                            <Tab text="Monthly Appointment Totals">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <SplitPane layoutX="1.0" layoutY="29.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="100.0">
+                                             <items>
+                                                <VBox alignment="TOP_CENTER" prefHeight="170.0" prefWidth="553.0" spacing="40.0">
+                                                   <children>
+                                                      <Label alignment="TOP_CENTER" maxWidth="250.0" text="Customer Appointment Totals by Type and Month" textAlignment="CENTER" wrapText="true">
+                                                         <font>
+                                                            <Font name="System Bold" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ComboBox prefWidth="175.0" promptText="Appointment Type">
+                                                         <opaqueInsets>
+                                                            <Insets />
+                                                         </opaqueInsets>
+                                                      </ComboBox>
+                                                      <ComboBox prefWidth="175.0" promptText="Appointment Month">
+                                                         <opaqueInsets>
+                                                            <Insets />
+                                                         </opaqueInsets>
+                                                      </ComboBox>
+                                                      <Label alignment="TOP_CENTER" text="Total: ">
+                                                         <font>
+                                                            <Font size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                             </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                            <Tab text="Contact Schedule">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TableView fx:id="appointmentTable1" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+                                             <columns>
+                                                <TableColumn fx:id="contactApptIdCol1" prefWidth="29.666664123535156" text="ID" />
+                                                <TableColumn fx:id="contactApptTitleCol" prefWidth="94.0" text="Title" />
+                                                <TableColumn fx:id="contactApptTypeCol" prefWidth="110.0" text="Type" />
+                                                <TableColumn fx:id="contactApptDescCol" prefWidth="109.0" text="Description" />
+                                                <TableColumn fx:id="contactApptLocationCol" prefWidth="98.0" text="Location" />
+                                                <TableColumn fx:id="contactApptDateCol" prefWidth="93.0" text="Date" />
+                                                <TableColumn fx:id="contactApptStartCol" prefWidth="85.0" text="Start Time" />
+                                                <TableColumn fx:id="contactApptEndCol" text="End Time" />
+                                                <TableColumn fx:id="contactApptCustomerCol" prefWidth="96.0" text="Customer" />
+                                                <TableColumn fx:id="contactApptUserCol" prefWidth="99.0" text="User" />
+                                             </columns>
+                                          </TableView>
+                                          <ComboBox layoutX="30.0" layoutY="37.0" prefWidth="150.0" promptText="Contact" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="35.0" />
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                              <Tab text="Customer Appointments">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TableView fx:id="appointmentTable2" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+                                             <columns>
+                                                <TableColumn fx:id="custApptIDCol" prefWidth="29.666664123535156" text="ID" />
+                                                <TableColumn fx:id="custApptTitleCol" prefWidth="101.0" text="Title" />
+                                                <TableColumn fx:id="custApptTypeCol" prefWidth="127.0" text="Type" />
+                                                <TableColumn fx:id="custApptDescCol" prefWidth="119.0" text="Description" />
+                                                <TableColumn fx:id="custApptLocationCol" prefWidth="110.0" text="Location" />
+                                                <TableColumn fx:id="custApptContactCol" prefWidth="113.0" text="Contact" />
+                                                <TableColumn fx:id="custApptDateCol" prefWidth="66.0" text="Date" />
+                                                <TableColumn fx:id="custApptStartCol" prefWidth="74.0" text="Start Time" />
+                                                <TableColumn fx:id="custApptEndCol" prefWidth="74.0" text="End Time" />
+                                                <TableColumn fx:id="custApptUserCol" prefWidth="78.0" text="User" />
+                                             </columns>
+                                          </TableView>
+                                          <ComboBox layoutX="40.0" layoutY="45.0" prefWidth="150.0" promptText="Customer" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="35.0" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                          </tabs>
+                        </TabPane>
+                     </children></AnchorPane>
               </content>
             </Tab>
         </tabs>
