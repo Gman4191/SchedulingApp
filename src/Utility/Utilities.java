@@ -36,4 +36,8 @@ public class Utilities {
     {
         return ZonedDateTime.of(LocalDate.now(), time, currentZone).withZoneSameInstant(desiredZone).toLocalTime();
     }
+    public static LocalDateTime changeTimeZone(LocalDateTime time, ZoneId currentZone, ZoneId desiredZone)
+    {
+        return ZonedDateTime.of(time, currentZone).withZoneSameInstant(desiredZone).toLocalDateTime();
+    }
 }

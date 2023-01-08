@@ -3,9 +3,8 @@ package Controllers;
 import DAO.DBLogin;
 import Models.Appointment;
 import Models.User;
-import Utility.Language;
 import Utility.Utilities;
-import javafx.collections.ObservableList;
+import com.sun.glass.ui.ClipboardAssistance;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,18 +12,25 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static javafx.collections.FXCollections.observableArrayList;
-
 public class LoginController implements Initializable {
 
+    public final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss");
     /**
      * The login button
      */
@@ -37,14 +43,6 @@ public class LoginController implements Initializable {
      * Contains the user's name
      */
     public TextField userNameField;
-    /**
-     * Drop down of language options
-     */
-    public ComboBox<Language> languageBox;
-    /**
-     * Languages to translate the page between
-     */
-    private final ObservableList<Language> languages = observableArrayList();
     /**
      * Login page title
      */
@@ -62,12 +60,16 @@ public class LoginController implements Initializable {
      */
     public Label locationLabel;
 
+    private final static ResourceBundle language = ResourceBundle.getBundle("Utility/Translation", Locale.getDefault());
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        languages.addAll(new Language("en"), new Language("fr"));
-        languageBox.setItems(languages);
-        languageBox.setValue(languages.get(0));
-        locationLabel.setText(ZoneId.systemDefault().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+        loginLabel.setText(language.getString("login"));
+        loginButton.setText(language.getString("login"));
+        userNameLabel.setText(language.getString("userName"));
+        userNameField.setPromptText(language.getString("userNameField"));
+        passwordLabel.setText(language.getString("password"));
+        passwordField.setPromptText(language.getString("passwordField"));
+        locationLabel.setText(ZoneId.systemDefault().getId());
     }
 
     /**
@@ -76,15 +78,18 @@ public class LoginController implements Initializable {
      * @throws IOException when the main menu page fails to load
      */
     public void OnLogin(ActionEvent actionEvent) throws IOException {
+
         try{
             int id = DBLogin.verifyUser(userNameField.getText(), passwordField.getText());
             User.setUserName(userNameField.getText());
             User.setId(id);
             checkUpcomingAppointments();
+            recordLoginAttempt(true);
         } catch(Exception e)
         {
-            Alert alert = new Alert(Alert.AlertType.ERROR, Language.getLanguage().getString(e.getMessage()));
-            alert.setHeaderText(Language.getLanguage().getString("error"));
+            recordLoginAttempt(false);
+            Alert alert = new Alert(Alert.AlertType.ERROR, language.getString(e.getMessage()));
+            alert.setHeaderText(language.getString("error"));
             alert.show();
             return;
         }
@@ -96,34 +101,48 @@ public class LoginController implements Initializable {
         stage.show();
     }
 
-    /**
-     * Update the language used in the login page
-     * @param actionEvent
-     */
-    public void OnUpdateLanguage(ActionEvent actionEvent) {
-        Language language = languageBox.getSelectionModel().getSelectedItem();
-        language.setLanguage();
-
-        loginLabel.setText(Language.getLanguage().getString("login"));
-        loginButton.setText(Language.getLanguage().getString("login"));
-        userNameLabel.setText(Language.getLanguage().getString("userName"));
-        userNameField.setPromptText(Language.getLanguage().getString("userNameField"));
-        passwordLabel.setText(Language.getLanguage().getString("password"));
-        passwordField.setPromptText(Language.getLanguage().getString("passwordField"));
-        locationLabel.setText(ZoneId.systemDefault().getDisplayName(TextStyle.FULL, Language.getLanguage().getLocale()));
-    }
-
     public void checkUpcomingAppointments()
     {
         Appointment a = DBLogin.getUpcomingAppointment(LocalDateTime.now());
         if(a != null)
         {
-            Utilities.displayMessage(Language.getLanguage().getString("a1") + " " + a.getId() + " " +
-                    Language.getLanguage().getString("a2") + " " + a.getDate() +
-                    Language.getLanguage().getString("a3") + " " + a.getStart());
+            Utilities.displayMessage(language.getString("a1") + " " + a.getId() + " " +
+                    language.getString("a2") + " " + a.getDate() +
+                    language.getString("a3") + " " + a.getStart());
         } else
         {
-            Utilities.displayMessage(Language.getLanguage().getString("noAppointments"));
+            Utilities.displayMessage(language.getString("noAppointments"));
         }
+    }
+
+    public void recordLoginAttempt(boolean loginSuccess)
+    {
+        FileWriter output = null;
+        String log;
+        try {
+            output = new FileWriter("login_activity.txt", true);
+            if(loginSuccess) {
+                log = "User " + userNameField.getText() + " made a successful login attempt at " + " " +
+                      Utilities.changeTimeZone(LocalDateTime.now(), ZoneId.systemDefault(), ZoneId.of("UTC"))
+                        .format(formatter) + " UTC\n";
+            }else{
+                log = "User " + userNameField.getText() + " made an unsuccessful login attempt at " + " " +
+                      Utilities.changeTimeZone(LocalDateTime.now(), ZoneId.systemDefault(), ZoneId.of("UTC"))
+                        .format(formatter) + " UTC\n";
+            }
+            output.append(log);
+        } catch(IOException e)
+        {
+            e.printStackTrace();
+        } finally {
+            try{
+                if(output != null)
+                    output.close();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

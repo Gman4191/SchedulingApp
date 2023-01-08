@@ -62,7 +62,6 @@
             </VBox>
             <VBox alignment="CENTER" spacing="20.0">
                <children>
-                  <ComboBox fx:id="languageBox" onAction="#OnUpdateLanguage" prefWidth="150.0" />
                   <Label fx:id="locationLabel" text="UTC">
                      <font>
                         <Font name="Trebuchet MS" size="14.0" />
