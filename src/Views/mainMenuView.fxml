@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainMenuController">
    <children>
       <TabPane fx:id="tabPane" layoutX="233.0" layoutY="169.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0" tabMinHeight="40.0" tabMinWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -105,17 +105,17 @@
                                                             <Font name="System Bold" size="18.0" />
                                                          </font>
                                                       </Label>
-                                                      <ComboBox prefWidth="175.0" promptText="Appointment Type">
+                                                      <ComboBox fx:id="appointmentTypeBox" prefWidth="175.0" promptText="Appointment Type" onAction="#OnGetAppointmentTotals">
                                                          <opaqueInsets>
                                                             <Insets />
                                                          </opaqueInsets>
                                                       </ComboBox>
-                                                      <ComboBox prefWidth="175.0" promptText="Appointment Month">
+                                                      <ComboBox fx:id="appointmentMonthBox" prefWidth="175.0" promptText="Appointment Month" onAction="#OnGetAppointmentTotals">
                                                          <opaqueInsets>
                                                             <Insets />
                                                          </opaqueInsets>
                                                       </ComboBox>
-                                                      <Label alignment="TOP_CENTER" text="Total: ">
+                                                      <Label fx:id="totalAppointments" alignment="TOP_CENTER" text="Total: ">
                                                          <font>
                                                             <Font size="14.0" />
                                                          </font>

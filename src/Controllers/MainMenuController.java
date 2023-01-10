@@ -2,10 +2,12 @@ package Controllers;
 
 import DAO.DBAppointment;
 import DAO.DBCustomer;
+import DAO.DBReport;
 import Models.Appointment;
 import Models.Customer;
 import Utility.Utilities;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,15 +16,20 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import static javafx.collections.FXCollections.observableArrayList;
 
 public class MainMenuController implements Initializable {
 
@@ -72,6 +79,9 @@ public class MainMenuController implements Initializable {
     public RadioButton allButton;
     public RadioButton monthButton;
     public RadioButton weekButton;
+    public ComboBox<String> appointmentTypeBox;
+    public ComboBox<Month> appointmentMonthBox;
+    public Label totalAppointments;
 
     /**
      * Initialize the main menu
@@ -108,6 +118,37 @@ public class MainMenuController implements Initializable {
         appointmentCustomerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         appointmentUserCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
         appointmentContactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
+
+        // Initialize the appointment types drop down in the first report
+        appointmentTypeBox.setItems(DBReport.getAllTypes());
+
+        // Initialize the months drop down in the first report
+        appointmentMonthBox.getItems().addAll(Month.values());
+        appointmentMonthBox.setVisibleRowCount(6);
+        appointmentMonthBox.setCellFactory(m -> new ListCell<>(){
+            @Override
+            protected void updateItem(Month month, boolean isEmpty)
+            {
+                super.updateItem(month, isEmpty);
+                if(isEmpty || month == null) setText(null);
+                else setText(month.getDisplayName(TextStyle.FULL, Locale.getDefault()));
+            }
+        });
+
+        appointmentMonthBox.setConverter(new StringConverter<Month>() {
+            @Override
+            public String toString(Month month){
+                if(month == null) return "";
+                else
+                    return month.getDisplayName(TextStyle.FULL, Locale.getDefault());
+            }
+
+            @Override
+            public Month fromString(String string)
+            {
+                return null;
+            }
+        });
     }
 
     /**
@@ -253,5 +294,15 @@ public class MainMenuController implements Initializable {
         LocalDate weekEnd = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
 
         appointmentTable.setItems(DBAppointment.getFilteredAppointments(weekStart, weekEnd));
+    }
+
+    public void OnGetAppointmentTotals(ActionEvent actionEvent) {
+        String type = appointmentTypeBox.getSelectionModel().getSelectedItem();
+        Month month = appointmentMonthBox.getSelectionModel().getSelectedItem();
+
+        if(type == null || month == null)
+            return;
+
+        totalAppointments.setText("Total: " + DBReport.getAppointmentTotal(type, month));
     }
 }
