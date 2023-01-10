@@ -132,9 +132,9 @@
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <TableView fx:id="appointmentTable1" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+                                          <TableView fx:id="contactApptTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
                                              <columns>
-                                                <TableColumn fx:id="contactApptIdCol1" prefWidth="29.666664123535156" text="ID" />
+                                                <TableColumn fx:id="contactApptIdCol" prefWidth="29.666664123535156" text="ID" />
                                                 <TableColumn fx:id="contactApptTitleCol" prefWidth="94.0" text="Title" />
                                                 <TableColumn fx:id="contactApptTypeCol" prefWidth="110.0" text="Type" />
                                                 <TableColumn fx:id="contactApptDescCol" prefWidth="109.0" text="Description" />
@@ -146,7 +146,7 @@
                                                 <TableColumn fx:id="contactApptUserCol" prefWidth="99.0" text="User" />
                                              </columns>
                                           </TableView>
-                                          <ComboBox layoutX="30.0" layoutY="37.0" prefWidth="150.0" promptText="Contact" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="35.0" />
+                                          <ComboBox fx:id="contactBox" layoutX="30.0" layoutY="37.0" prefWidth="150.0" promptText="Contact" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="35.0" onAction="#OnSelectContact"/>
                                        </children>
                                     </AnchorPane>
                               </content>
@@ -155,9 +155,9 @@
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <TableView fx:id="appointmentTable2" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+                                          <TableView fx:id="customerApptTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
                                              <columns>
-                                                <TableColumn fx:id="custApptIDCol" prefWidth="29.666664123535156" text="ID" />
+                                                <TableColumn fx:id="custApptIDCol" prefWidth="30" text="ID" />
                                                 <TableColumn fx:id="custApptTitleCol" prefWidth="101.0" text="Title" />
                                                 <TableColumn fx:id="custApptTypeCol" prefWidth="127.0" text="Type" />
                                                 <TableColumn fx:id="custApptDescCol" prefWidth="119.0" text="Description" />
@@ -169,7 +169,7 @@
                                                 <TableColumn fx:id="custApptUserCol" prefWidth="78.0" text="User" />
                                              </columns>
                                           </TableView>
-                                          <ComboBox layoutX="40.0" layoutY="45.0" prefWidth="150.0" promptText="Customer" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="35.0" />
+                                          <ComboBox fx:id="customerBox" layoutX="40.0" layoutY="45.0" prefWidth="150.0" promptText="Customer" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="35.0" onAction="#OnSelectCustomer"/>
                                        </children>
                                     </AnchorPane>
                                  </content>

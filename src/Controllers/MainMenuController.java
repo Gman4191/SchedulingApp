@@ -4,10 +4,10 @@ import DAO.DBAppointment;
 import DAO.DBCustomer;
 import DAO.DBReport;
 import Models.Appointment;
+import Models.Contact;
 import Models.Customer;
 import Utility.Utilities;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,19 +17,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-
 import java.io.IOException;
 import java.net.URL;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
-import static javafx.collections.FXCollections.observableArrayList;
 
 public class MainMenuController implements Initializable {
 
@@ -82,6 +76,30 @@ public class MainMenuController implements Initializable {
     public ComboBox<String> appointmentTypeBox;
     public ComboBox<Month> appointmentMonthBox;
     public Label totalAppointments;
+    public TableView<Appointment> contactApptTable;
+    public TableColumn<Appointment, Integer> contactApptIdCol;
+    public TableColumn<Appointment, String> contactApptTitleCol;
+    public TableColumn<Appointment, String> contactApptTypeCol;
+    public TableColumn<Appointment, String> contactApptDescCol;
+    public TableColumn<Appointment, String> contactApptLocationCol;
+    public TableColumn<Appointment, LocalDate> contactApptDateCol;
+    public TableColumn<Appointment, String> contactApptStartCol;
+    public TableColumn<Appointment, String> contactApptEndCol;
+    public TableColumn<Appointment, String> contactApptCustomerCol;
+    public TableColumn<Appointment, String> contactApptUserCol;
+    public ComboBox<Contact> contactBox;
+    public TableView<Appointment> customerApptTable;
+    public TableColumn<Appointment, Integer> custApptIDCol;
+    public TableColumn<Appointment, String> custApptTitleCol;
+    public TableColumn<Appointment, String> custApptTypeCol;
+    public TableColumn<Appointment, String> custApptDescCol;
+    public TableColumn<Appointment, String> custApptLocationCol;
+    public TableColumn<Appointment, String> custApptContactCol;
+    public TableColumn<Appointment, LocalDate> custApptDateCol;
+    public TableColumn<Appointment, String> custApptStartCol;
+    public TableColumn<Appointment, String> custApptEndCol;
+    public TableColumn<Appointment, String> custApptUserCol;
+    public ComboBox<Customer> customerBox;
 
     /**
      * Initialize the main menu
@@ -149,6 +167,40 @@ public class MainMenuController implements Initializable {
                 return null;
             }
         });
+
+        // Initialize the drop down of contact options
+        contactBox.setItems(DBAppointment.getAllContacts());
+
+        // Initialize the contact appointment report table
+        contactApptIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        contactApptTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        contactApptDescCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        contactApptLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        contactApptTypeCol.setCellValueFactory((new PropertyValueFactory<>("type")));
+        contactApptDateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
+        contactApptStartCol.setCellValueFactory(s -> new SimpleStringProperty(s.getValue().getStart().toString() + " " +
+                ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.ENGLISH)));
+        contactApptEndCol.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getEnd().toString() + " " +
+                ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.ENGLISH)));
+        contactApptCustomerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        contactApptUserCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
+
+        // Initialize the drop down of customer options
+        customerBox.setItems(DBCustomer.getAllCustomers());
+
+        // Initialize the customer appointment table
+        custApptIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        custApptTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        custApptDescCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        custApptLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        custApptTypeCol.setCellValueFactory((new PropertyValueFactory<>("type")));
+        custApptDateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
+        custApptStartCol.setCellValueFactory(s -> new SimpleStringProperty(s.getValue().getStart().toString() + " " +
+                ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.ENGLISH)));
+        custApptEndCol.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getEnd().toString() + " " +
+                ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.ENGLISH)));
+        custApptContactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
+        custApptUserCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
     }
 
     /**
@@ -304,5 +356,23 @@ public class MainMenuController implements Initializable {
             return;
 
         totalAppointments.setText("Total: " + DBReport.getAppointmentTotal(type, month));
+    }
+
+    public void OnSelectContact(ActionEvent actionEvent) {
+        Contact selectedContact = contactBox.getSelectionModel().getSelectedItem();
+
+        if(selectedContact == null)
+            return;
+
+        contactApptTable.setItems(DBReport.getContactAppointments(selectedContact));
+    }
+
+    public void OnSelectCustomer(ActionEvent actionEvent) {
+        Customer selectedCustomer = customerBox.getSelectionModel().getSelectedItem();
+
+        if(selectedCustomer == null)
+            return;
+
+        customerApptTable.setItems(DBReport.getCustomerAppointments(selectedCustomer));
     }
 }
