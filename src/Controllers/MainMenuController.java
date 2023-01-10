@@ -143,6 +143,8 @@ public class MainMenuController implements Initializable {
         // Initialize the months drop down in the first report
         appointmentMonthBox.getItems().addAll(Month.values());
         appointmentMonthBox.setVisibleRowCount(6);
+
+        // Display the name of each month option in the drop down
         appointmentMonthBox.setCellFactory(m -> new ListCell<>(){
             @Override
             protected void updateItem(Month month, boolean isEmpty)
@@ -153,6 +155,7 @@ public class MainMenuController implements Initializable {
             }
         });
 
+        // Display the name of the selected month
         appointmentMonthBox.setConverter(new StringConverter<Month>() {
             @Override
             public String toString(Month month){

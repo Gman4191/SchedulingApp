@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -68,7 +69,18 @@ public class AddAppointmentController extends BaseAppointmentControl implements 
                 super.updateItem(time, isEmpty);
                 if (isEmpty || time == null) setText(null);
                 else setText(time + " " +
-                        ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.ENGLISH));
+                        ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.getDefault()));
+            }
+        });
+        startBox.setConverter(new StringConverter<LocalTime>() {
+            @Override
+            public String toString(LocalTime localTime) {
+                return localTime + " " + ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.getDefault());
+            }
+
+            @Override
+            public LocalTime fromString(String s) {
+                return null;
             }
         });
         endBox.setItems(appointmentTimes);
@@ -78,7 +90,18 @@ public class AddAppointmentController extends BaseAppointmentControl implements 
                 super.updateItem(time, isEmpty);
                 if (isEmpty || time == null) setText(null);
                 else setText(time + " " +
-                        ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.ENGLISH));
+                        ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.getDefault()));
+            }
+        });
+        endBox.setConverter(new StringConverter<LocalTime>() {
+            @Override
+            public String toString(LocalTime localTime) {
+                return localTime + " " + ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.getDefault());
+            }
+
+            @Override
+            public LocalTime fromString(String s) {
+                return null;
             }
         });
     }

@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ModifyAppointmentController">
    <children>
       <Label text="Modify Appointment" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="50.0">
@@ -59,13 +58,24 @@
                         <TextField fx:id="descriptionField" />
                      </children>
                   </VBox>
-                  <ComboBox fx:id="typeBox" prefWidth="150.0" promptText="Appointment Type">
-                     <VBox.margin>
-                        <Insets top="20.0" />
-                     </VBox.margin>
-                  </ComboBox>
-                  <ComboBox fx:id="customerBox" prefWidth="150.0" promptText="Customer" />
-                  <ComboBox fx:id="contactBox" prefWidth="150.0" promptText="Contact" />
+                  <VBox>
+                     <children>
+                        <Label text="Type" />
+                        <ComboBox fx:id="typeBox" prefWidth="150.0" promptText="Appointment Type" />
+                     </children>
+                  </VBox>
+                  <VBox>
+                     <children>
+                        <Label text="Customer" />
+                        <ComboBox fx:id="customerBox" prefWidth="150.0" promptText="Customer" />
+                     </children>
+                  </VBox>
+                  <VBox>
+                     <children>
+                        <Label text="Contact" />
+                        <ComboBox fx:id="contactBox" prefWidth="150.0" promptText="Contact" />
+                     </children>
+                  </VBox>
                </children>
             </VBox>
             <VBox spacing="40.0">
@@ -76,16 +86,26 @@
                         <DatePicker fx:id="dateField" />
                      </children>
                   </VBox>
-                  <ComboBox fx:id="startBox" prefWidth="150.0" promptText="Start Time" />
-                  <ComboBox fx:id="endBox" prefWidth="150.0" promptText="End Time" />
+                  <VBox>
+                     <children>
+                        <Label text="Start" />
+                        <ComboBox fx:id="startBox" prefWidth="150.0" promptText="Start Time" />
+                     </children>
+                  </VBox>
+                  <VBox>
+                     <children>
+                        <Label text="End" />
+                        <ComboBox fx:id="endBox" prefWidth="150.0" promptText="End Time" />
+                     </children>
+                  </VBox>
                </children>
             </VBox>
          </children>
       </HBox>
       <HBox layoutX="603.0" layoutY="486.0" spacing="30.0">
          <children>
-            <Button mnemonicParsing="false" text="Save" onAction="#OnSave"/>
-            <Button mnemonicParsing="false" text="Cancel" onAction="#OnCancel"/>
+            <Button mnemonicParsing="false" onAction="#OnSave" text="Save" />
+            <Button mnemonicParsing="false" onAction="#OnCancel" text="Cancel" />
          </children>
       </HBox>
    </children>
