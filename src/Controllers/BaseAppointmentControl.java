@@ -8,13 +8,13 @@ import Models.Customer;
 import javafx.collections.ObservableList;
 
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
 public class BaseAppointmentControl {
-    protected final static String pattern = "HH:mm";
+    protected final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
     protected final static ZoneId businessZone = ZoneId.of("America/New_York");
-    protected final static ZoneId databaseZone = ZoneId.of("UTC");
     protected final static String businessStartTime = "08:00";
     protected final static String businessEndTime = "22:00";
 
@@ -46,24 +46,5 @@ public class BaseAppointmentControl {
     protected static void setContacts()
     {
         contacts = DBAppointment.getAllContacts();
-    }
-    public static Customer getCustomer(int customerId)
-    {
-        for(Customer c : DBCustomer.getAllCustomers())
-        {
-            if(c.getId() == customerId)
-                return c;
-        }
-        return null;
-    }
-
-    public static Contact getContact(int contactId)
-    {
-        for(Contact c : DBAppointment.getAllContacts())
-        {
-            if(c.getId() == contactId)
-                return c;
-        }
-        return null;
     }
 }

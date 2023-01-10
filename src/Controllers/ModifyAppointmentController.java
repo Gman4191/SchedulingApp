@@ -15,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -26,21 +25,57 @@ import java.time.format.DateTimeParseException;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import static javafx.collections.FXCollections.observableArrayList;
 
 public class ModifyAppointmentController extends BaseAppointmentControl implements Initializable {
+    /**
+     * Appointment id
+     */
     public TextField idField;
+    /**
+     * Appointment title
+     */
     public TextField titleField;
+    /**
+     * Appointment location
+     */
     public TextField locationField;
+    /**
+     * Appointment description
+     */
     public TextField descriptionField;
+    /**
+     * Appointment type options
+     */
     public ComboBox<String> typeBox;
+    /**
+     * Appointment customer options
+     */
     public ComboBox<Customer> customerBox;
-    public DatePicker dateField;
-    public ComboBox<LocalTime> startBox;
-    public ComboBox<LocalTime> endBox;
+    /**
+     * Appointment contact options
+     */
     public ComboBox<Contact> contactBox;
+    /**
+     * Appointment date field
+     */
+    public DatePicker dateField;
+    /**
+     * Appointment start time options
+     */
+    public ComboBox<LocalTime> startBox;
+    /**
+     * Appointment end time options
+     */
+    public ComboBox<LocalTime> endBox;
 
+    /**
+     * Initialize the UI components
+     * <p>LAMBDA JUSTIFICATION: The start and end drop down boxes use two lambda functions each to display the current
+     *  time zone next to each time entry option and the selected start and end times</p>
+     * @param url the URL
+     * @param resourceBundle the resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize the appointment type options
@@ -54,7 +89,7 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
         setContacts();
         contactBox.setItems(getContacts());
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        // Get the business start and end times in the current time zone
         LocalTime businessEnd = Utilities.changeTimeZone(LocalTime.parse(businessEndTime, formatter), businessZone, ZoneId.systemDefault());
         LocalTime businessTime = Utilities.changeTimeZone(LocalTime.parse(businessStartTime, formatter), businessZone, ZoneId.systemDefault());
 
@@ -63,8 +98,10 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
         for(; businessTime.isBefore(businessEnd) || businessTime.equals(businessEnd); businessTime = businessTime.plusMinutes(30))
             appointmentTimes.add(businessTime);
 
-        // Initialize the start and end time selection boxes
+        // Initialize the start time drop down box
         startBox.setItems(appointmentTimes);
+
+        // Display the current time zone next to each time entry
         startBox.setCellFactory(listView -> new ListCell<>() {
             @Override
             protected void updateItem(LocalTime time, boolean isEmpty) {
@@ -74,7 +111,9 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
                         ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.getDefault()));
             }
         });
-        startBox.setConverter(new StringConverter<LocalTime>() {
+
+        // Display the current time zone next to the selected time entry
+        startBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(LocalTime localTime) {
                 return localTime + " " + ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.getDefault());
@@ -85,7 +124,11 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
                 return null;
             }
         });
+
+        // Initialize the end time drop down box
         endBox.setItems(appointmentTimes);
+
+        // Display the current time zone next to each time entry
         endBox.setCellFactory(listView -> new ListCell<>() {
             @Override
             protected void updateItem(LocalTime time, boolean isEmpty) {
@@ -95,7 +138,9 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
                         ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.getDefault()));
             }
         });
-        endBox.setConverter(new StringConverter<LocalTime>() {
+
+        // Display the current time zone next to the selected time entry
+        endBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(LocalTime localTime) {
                 return localTime + " " + ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.getDefault());
@@ -108,6 +153,11 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
         });
     }
 
+    /**
+     * Save the modified appointment information
+     * @param actionEvent the handled save event
+     * @throws IOException when the main menu fails to load
+     */
     public void OnSave(ActionEvent actionEvent) throws IOException {
         // Validate the entered data
         if(!validateData())
@@ -157,7 +207,6 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
 
     private boolean validateData(){
         LocalDate appointmentDate;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         LocalTime businessEnd = Utilities.changeTimeZone(LocalTime.parse(businessEndTime, formatter), businessZone, ZoneId.systemDefault());
         LocalTime businessStart = Utilities.changeTimeZone(LocalTime.parse(businessStartTime, formatter), businessZone, ZoneId.systemDefault());
         try{

@@ -26,7 +26,12 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
+    /**
+     * The main menu options
+     */
+    public TabPane mainMenuTabPane;
 
+    // region Customers
     /**
      * Table displaying the customers
      */
@@ -55,56 +60,194 @@ public class MainMenuController implements Initializable {
      * Contains customer country names
      */
     public TableColumn<Customer, String> countryCol;
+    /**
+     * Contains the overview of all appointments
+     */
+    //endregion
 
-    public TableView<Appointment> appointmentTable;
-    public TableColumn<Appointment, Integer> appointmentIdCol;
-    public TableColumn<Appointment, String> appointmentTitleCol;
-    public TableColumn<Appointment, String> appointmentTypeCol;
-    public TableColumn<Appointment, String> appointmentDescCol;
-    public TableColumn<Appointment, String> appointmentLocationCol;
-    public TableColumn<Appointment, String> appointmentContactCol;
-    public TableColumn<Appointment, LocalDate> appointmentDateCol;
-    public TableColumn<Appointment, String> appointmentStartCol;
-    public TableColumn<Appointment, String> appointmentEndCol;
-    public TableColumn<Appointment, String> appointmentCustomerCol;
-    public TableColumn<Appointment, String> appointmentUserCol;
+    // region Appointments
     public Tab appointmentTab;
-    public TabPane tabPane;
+    /**
+     * Table displaying the appointments
+     */
+    public TableView<Appointment> appointmentTable;
+    /**
+     * Contains appointment ids
+     */
+    public TableColumn<Appointment, Integer> appointmentIdCol;
+    /**
+     * Contains appointment titles
+     */
+    public TableColumn<Appointment, String> appointmentTitleCol;
+    /**
+     * Contains appointment types
+     */
+    public TableColumn<Appointment, String> appointmentTypeCol;
+    /**
+     * Contains appointment descriptions
+     */
+    public TableColumn<Appointment, String> appointmentDescCol;
+    /**
+     * Contains appointment locations
+     */
+    public TableColumn<Appointment, String> appointmentLocationCol;
+    /**
+     * Contains appointment contact names
+     */
+    public TableColumn<Appointment, String> appointmentContactCol;
+    /**
+     * Contains appointment dates
+     */
+    public TableColumn<Appointment, LocalDate> appointmentDateCol;
+    /**
+     * Contains appointment start times
+     */
+    public TableColumn<Appointment, String> appointmentStartCol;
+    /**
+     * Contains appointment end times
+     */
+    public TableColumn<Appointment, String> appointmentEndCol;
+    /**
+     * Contains appointment customer names
+     */
+    public TableColumn<Appointment, String> appointmentCustomerCol;
+    /**
+     * Contains appointment user names
+     */
+    public TableColumn<Appointment, String> appointmentUserCol;
+    /**
+     * Button to display all appointments
+     */
     public RadioButton allButton;
+    /**
+     * Button to display appointments filtered by the current month
+     */
     public RadioButton monthButton;
+    /**
+     * Button to display appointments filtered by the current week
+     */
     public RadioButton weekButton;
+    // endregion
+
+    // region Reports
+    /**
+     * Appointment type options for the monthly appointment totals
+     */
     public ComboBox<String> appointmentTypeBox;
+    /**
+     * Appointment month options for the monthly appointment totals
+     */
     public ComboBox<Month> appointmentMonthBox;
+    /**
+     * Contains the result of the monthly appointment total report
+     */
     public Label totalAppointments;
-    public TableView<Appointment> contactApptTable;
-    public TableColumn<Appointment, Integer> contactApptIdCol;
-    public TableColumn<Appointment, String> contactApptTitleCol;
-    public TableColumn<Appointment, String> contactApptTypeCol;
-    public TableColumn<Appointment, String> contactApptDescCol;
-    public TableColumn<Appointment, String> contactApptLocationCol;
-    public TableColumn<Appointment, LocalDate> contactApptDateCol;
-    public TableColumn<Appointment, String> contactApptStartCol;
-    public TableColumn<Appointment, String> contactApptEndCol;
-    public TableColumn<Appointment, String> contactApptCustomerCol;
-    public TableColumn<Appointment, String> contactApptUserCol;
+    /**
+     * Contact name options
+     */
     public ComboBox<Contact> contactBox;
-    public TableView<Appointment> customerApptTable;
-    public TableColumn<Appointment, Integer> custApptIDCol;
-    public TableColumn<Appointment, String> custApptTitleCol;
-    public TableColumn<Appointment, String> custApptTypeCol;
-    public TableColumn<Appointment, String> custApptDescCol;
-    public TableColumn<Appointment, String> custApptLocationCol;
-    public TableColumn<Appointment, String> custApptContactCol;
-    public TableColumn<Appointment, LocalDate> custApptDateCol;
-    public TableColumn<Appointment, String> custApptStartCol;
-    public TableColumn<Appointment, String> custApptEndCol;
-    public TableColumn<Appointment, String> custApptUserCol;
+    /**
+     * Table of appointments filtered by contact name
+     */
+    public TableView<Appointment> contactApptTable;
+    /**
+     * Contains appointment ids
+     */
+    public TableColumn<Appointment, Integer> contactApptIdCol;
+    /**
+     * Contains appointment titles
+     */
+    public TableColumn<Appointment, String> contactApptTitleCol;
+    /**
+     * Contains appointment types
+     */
+    public TableColumn<Appointment, String> contactApptTypeCol;
+    /**
+     * Contains appointment descriptions
+     */
+    public TableColumn<Appointment, String> contactApptDescCol;
+    /**
+     * Contains appointment locations
+     */
+    public TableColumn<Appointment, String> contactApptLocationCol;
+    /**
+     * Contains appointment dates
+     */
+    public TableColumn<Appointment, LocalDate> contactApptDateCol;
+    /**
+     * Contains appointment start times
+     */
+    public TableColumn<Appointment, String> contactApptStartCol;
+    /**
+     * Contains appointment end times
+     */
+    public TableColumn<Appointment, String> contactApptEndCol;
+    /**
+     * Contains appointment customer names
+     */
+    public TableColumn<Appointment, String> contactApptCustomerCol;
+    /**
+     * Contains appointment user names
+     */
+    public TableColumn<Appointment, String> contactApptUserCol;
+    /**
+     * Customer name options
+     */
     public ComboBox<Customer> customerBox;
+    /**
+     * Table of appointments filtered by customer name
+     */
+    public TableView<Appointment> customerApptTable;
+    /**
+     * Contains appointment ids
+     */
+    public TableColumn<Appointment, Integer> custApptIDCol;
+    /**
+     * Contains appointment titles
+     */
+    public TableColumn<Appointment, String> custApptTitleCol;
+    /**
+     * Contains appointment types
+     */
+    public TableColumn<Appointment, String> custApptTypeCol;
+    /**
+     * Contains appointment descriptions
+     */
+    public TableColumn<Appointment, String> custApptDescCol;
+    /**
+     * Contains appointment locations
+     */
+    public TableColumn<Appointment, String> custApptLocationCol;
+    /**
+     * Contains appointment contact names
+     */
+    public TableColumn<Appointment, String> custApptContactCol;
+    /**
+     * Contains appointment dates
+     */
+    public TableColumn<Appointment, LocalDate> custApptDateCol;
+    /**
+     * Contains appointment start times
+     */
+    public TableColumn<Appointment, String> custApptStartCol;
+    /**
+     * Contains appointment end times
+     */
+    public TableColumn<Appointment, String> custApptEndCol;
+    /**
+     * Contains appointment user names
+     */
+    public TableColumn<Appointment, String> custApptUserCol;
+    // endregion
 
     /**
      * Initialize the main menu
-     * <p>LAMBDA JUSTIFICATION: The lambda function used for the first-level division name
+     * <p>LAMBDA JUSTIFICATIONS: The lambda function used for the first-level division name
      * adds readability by replacing the division id in the table view.</p>
+     * <p>Every appointment table uses a lambda function to customize the display of their start and end times.
+     * The start and end time lambdas add the current time zone to the entries to be more descriptive.</p>
+     * <p>The month drop down menu in the first report uses lambda functions to change how the month is displayed.
+     * Originally, the months are displayed in all capital letters, but now, only the first letter is capitalized.</p>
      * @param url the URL
      * @param resourceBundle the resource bundle
      */
@@ -156,7 +299,7 @@ public class MainMenuController implements Initializable {
         });
 
         // Display the name of the selected month
-        appointmentMonthBox.setConverter(new StringConverter<Month>() {
+        appointmentMonthBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(Month month){
                 if(month == null) return "";
@@ -255,16 +398,21 @@ public class MainMenuController implements Initializable {
      */
     public void onCustomerDelete(ActionEvent actionEvent) {
         try{
+            // Get the selected customer
             Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
 
             if(selectedCustomer == null)
                 throw new Exception("A customer must be selected for deletion");
 
+            // Ask for confirmation before deleting the customer and their associated appointments
             if(Utilities.displayConfirmationMessage("Are you sure you want to permanently delete " + selectedCustomer.getName() +
                                                     " and their associated appointments?"))
             {
+                // Delete the selected customer and their associated appointments
                 Utilities.displayMessage("Customer, " + selectedCustomer.getName() + ", was deleted.");
                 DBCustomer.deleteCustomer(selectedCustomer);
+
+                // Update the customer and appointment tables
                 customerTable.setItems(DBCustomer.getAllCustomers());
                 appointmentTable.setItems(DBAppointment.getAllAppointments());
             }
@@ -274,6 +422,11 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * Load and display the add appointment form
+     * @param actionEvent the handled add appointment event
+     * @throws IOException when the add appointment form fails to load
+     */
     public void OnAddAppointment(ActionEvent actionEvent) throws IOException {
         Parent root = new FXMLLoader(getClass().getResource("/Views/addAppointmentView.fxml")).load();
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
@@ -282,18 +435,26 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Load and display the modify appointment form
+     * @param actionEvent the handled modify appointment event
+     * @throws IOException when the modify appointment form fails to load
+     */
     public void OnModifyAppointment(ActionEvent actionEvent) throws IOException {
+        // Load the modify appointment form
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/modifyAppointmentView.fxml"));
         Parent root = loader.load();
         ModifyAppointmentController controller = loader.getController();
         loader.setController(controller);
 
         try{
+            // Get the selected appointment
             Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
 
             if(selectedAppointment == null)
                 throw new Exception("An appointment must be selected for modification");
 
+            // Populate the form with the selected appointment's information
             controller.setAppointmentData(selectedAppointment);
         } catch(Exception e)
         {
@@ -301,30 +462,35 @@ public class MainMenuController implements Initializable {
             return;
         }
 
+        // Display the modify appointment form
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
-    
-    public void returnToAppointmentTab()
-    {
-        tabPane.getSelectionModel().select(appointmentTab);
-    }
 
+    /**
+     * Delete a selected appointment
+     * @param actionEvent the handled delete appointment event
+     */
     public void OnDeleteAppointment(ActionEvent actionEvent) {
         try{
+            // Get the selected appointment
             Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
 
             if(selectedAppointment == null)
                 throw new Exception("An appointment must be selected for deletion");
 
+            // Ask for confirmation to delete the selected appointment
             if(Utilities.displayConfirmationMessage("Are you sure you want to cancel the " + selectedAppointment.getType() +
                                                     " appointment no." + selectedAppointment.getId()))
             {
+                // Delete the selected appointment
                 DBAppointment.deleteAppointment(selectedAppointment);
                 Utilities.displayMessage(selectedAppointment.getType() + " appointment no." + selectedAppointment.getId() +
                         " has been cancelled");
+
+                // Update the appointment table
                 appointmentTable.setItems(DBAppointment.getAllAppointments());
             }
         } catch(Exception e)
@@ -333,10 +499,26 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * Return to the appointment tab in the main menu
+     */
+    public void returnToAppointmentTab()
+    {
+        mainMenuTabPane.getSelectionModel().select(appointmentTab);
+    }
+
+    /**
+     * Display all appointments in the appointments table
+     * @param actionEvent the handled filter event
+     */
     public void filterByAll(ActionEvent actionEvent) {
         appointmentTable.setItems(DBAppointment.getAllAppointments());
     }
 
+    /**
+     * Display the appointments filtered by the current month in the appointments table
+     * @param actionEvent the handled filter event
+     */
     public void filterByMonth(ActionEvent actionEvent) {
         LocalDate monthStart = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
         LocalDate monthEnd = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
@@ -344,6 +526,10 @@ public class MainMenuController implements Initializable {
         appointmentTable.setItems(DBAppointment.getFilteredAppointments(monthStart, monthEnd));
     }
 
+    /**
+     * Display the appointments filtered by the current week in the appointments table
+     * @param actionEvent the handled filter event
+     */
     public void filterByWeek(ActionEvent actionEvent) {
         LocalDate weekStart = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
         LocalDate weekEnd = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
@@ -351,6 +537,10 @@ public class MainMenuController implements Initializable {
         appointmentTable.setItems(DBAppointment.getFilteredAppointments(weekStart, weekEnd));
     }
 
+    /**
+     * Display the total number of appointments of a specific type in a given month
+     * @param actionEvent the handled total event
+     */
     public void OnGetAppointmentTotals(ActionEvent actionEvent) {
         String type = appointmentTypeBox.getSelectionModel().getSelectedItem();
         Month month = appointmentMonthBox.getSelectionModel().getSelectedItem();
@@ -361,6 +551,10 @@ public class MainMenuController implements Initializable {
         totalAppointments.setText("Total: " + DBReport.getAppointmentTotal(type, month));
     }
 
+    /**
+     * Display the appointments associated with the selected contact
+     * @param actionEvent the handled select event
+     */
     public void OnSelectContact(ActionEvent actionEvent) {
         Contact selectedContact = contactBox.getSelectionModel().getSelectedItem();
 
@@ -370,6 +564,10 @@ public class MainMenuController implements Initializable {
         contactApptTable.setItems(DBReport.getContactAppointments(selectedContact));
     }
 
+    /**
+     * Display the appointments associated with the selected customer
+     * @param actionEvent the handled select event
+     */
     public void OnSelectCustomer(ActionEvent actionEvent) {
         Customer selectedCustomer = customerBox.getSelectionModel().getSelectedItem();
 

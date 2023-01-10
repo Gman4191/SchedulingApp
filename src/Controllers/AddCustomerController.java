@@ -46,6 +46,11 @@ public class AddCustomerController implements Initializable {
      */
     public ComboBox<FirstLevelDivision> divisionBox;
 
+    /**
+     * Initialize the UI components
+     * @param url the URL
+     * @param resourceBundle the resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         countryBox.setItems(DBCustomer.getAllCountries());

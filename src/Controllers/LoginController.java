@@ -30,6 +30,9 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
+    /**
+     * The format of the local date and time
+     */
     public final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss");
     /**
      * The login button
@@ -59,8 +62,16 @@ public class LoginController implements Initializable {
      * Label noting the user's location
      */
     public Label locationLabel;
-
+    /**
+     * Resource component that guides language translation
+     */
     private final static ResourceBundle language = ResourceBundle.getBundle("Utility/Translation", Locale.getDefault());
+
+    /**
+     * Initialize the UI components
+     * @param url the URL
+     * @param resourceBundle the resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loginLabel.setText(language.getString("login"));
@@ -80,20 +91,29 @@ public class LoginController implements Initializable {
     public void OnLogin(ActionEvent actionEvent) throws IOException {
 
         try{
+            // Get the user id if the user name and password is valid
             int id = DBLogin.verifyUser(userNameField.getText(), passwordField.getText());
             User.setUserName(userNameField.getText());
             User.setId(id);
+
+            // Check for upcoming appointments
             checkUpcomingAppointments();
+
+            // Record the successful user login attempt
             recordLoginAttempt(true);
         } catch(Exception e)
         {
+            // Record the unsuccessful user login attempt
             recordLoginAttempt(false);
+
+            // Notify the user of the unsuccessful login attempt
             Alert alert = new Alert(Alert.AlertType.ERROR, language.getString(e.getMessage()));
             alert.setHeaderText(language.getString("error"));
             alert.show();
             return;
         }
 
+        // Display the main menu
         Parent root = new FXMLLoader(getClass().getResource("../Views/mainMenuView.fxml")).load();
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -101,6 +121,9 @@ public class LoginController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Check for upcoming appointments
+     */
     public void checkUpcomingAppointments()
     {
         Appointment a = DBLogin.getUpcomingAppointment(LocalDateTime.now());
@@ -115,12 +138,20 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Record all login attempts
+     * @param loginSuccess the success value of the login attempt
+     */
     public void recordLoginAttempt(boolean loginSuccess)
     {
         FileWriter output = null;
         String log;
+
         try {
+            // Open the file in append mode
             output = new FileWriter("login_activity.txt", true);
+
+            // Create the log entry based on whether the login attempt was successful or not
             if(loginSuccess) {
                 log = "User " + userNameField.getText() + " made a successful login attempt at " + " " +
                       Utilities.changeTimeZone(LocalDateTime.now(), ZoneId.systemDefault(), ZoneId.of("UTC"))
@@ -135,6 +166,7 @@ public class LoginController implements Initializable {
         {
             e.printStackTrace();
         } finally {
+            // Close the file
             try{
                 if(output != null)
                     output.close();
