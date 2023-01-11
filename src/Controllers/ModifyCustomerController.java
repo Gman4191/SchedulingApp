@@ -49,7 +49,11 @@ public class ModifyCustomerController implements Initializable {
      */
     public ComboBox<FirstLevelDivision> divisionBox;
 
-
+    /**
+     * Initialize the UI component
+     * @param url the URL
+     * @param resourceBundle the resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         countryBox.setItems(DBCustomer.getAllCountries());
@@ -80,15 +84,20 @@ public class ModifyCustomerController implements Initializable {
      * @throws IOException when the main menu fails to load
      */
     public void OnSave(ActionEvent actionEvent) throws IOException {
+        // Validate the modified customer information
         if(!validateData())
             return;
 
+        // Create an updated customer
         Customer updatedCustomer = new Customer(Integer.parseInt(idField.getText()), nameField.getText(), addressField.getText(), postalCodeField.getText(),
                                                 phoneNumberField.getText(), divisionBox.getSelectionModel().getSelectedItem().getId(),
                                                 countryBox.getSelectionModel().getSelectedItem().getId(),
                                                 countryBox.getSelectionModel().getSelectedItem().getCountry());
+
+        // Update the database with the modified customer information
         DBCustomer.updateCustomer(updatedCustomer);
 
+        // Return to the main menu
         Parent root = new FXMLLoader(getClass().getResource("/Views/mainMenuView.fxml")).load();
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);

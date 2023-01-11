@@ -182,31 +182,38 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
         Parent root = loader.load();
         MainMenuController controller = loader.getController();
         loader.setController(controller);
-
         controller.returnToAppointmentTab();
-
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
 
+    /**
+     * Cancel modifying the appointment information
+     * @param actionEvent the handled cancel event
+     * @throws IOException when the main menu fails to load
+     */
     public void OnCancel(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/mainMenuView.fxml"));
         Parent root = loader.load();
         MainMenuController controller = loader.getController();
         loader.setController(controller);
-
         controller.returnToAppointmentTab();
-
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
 
+    /**
+     * Validate the modified appointment information
+     * @return true if the modified information is valid
+     */
     private boolean validateData(){
         LocalDate appointmentDate;
+
+        // Get the business start and end times in the current time zone
         LocalTime businessEnd = Utilities.changeTimeZone(LocalTime.parse(businessEndTime, formatter), businessZone, ZoneId.systemDefault());
         LocalTime businessStart = Utilities.changeTimeZone(LocalTime.parse(businessStartTime, formatter), businessZone, ZoneId.systemDefault());
         try{
@@ -238,6 +245,7 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
                 appointmentDate = dateField.getValue();
             }
 
+            // Verify that the start time is within business hours
             if(startBox.getSelectionModel().isEmpty()) {
                 if (startBox.getValue().isBefore(businessStart) || startBox.getValue().isAfter(businessEnd)) {
                     throw new Exception("Select an appointment start time that is between the business hours(" +
@@ -248,6 +256,7 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
                 }
             }
 
+            // Verify that the end time is within business hours
             if(endBox.getSelectionModel().isEmpty()) {
                 if(endBox.getValue().isBefore(businessStart) || endBox.getValue().isAfter(businessEnd)){
                     throw new Exception("Select an appointment end time that is between the business hours(" +
@@ -273,6 +282,10 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
         return true;
     }
 
+    /**
+     * Populate the form with the selected appointment's information
+     * @param selectedAppointment the selected appointment
+     */
     public void setAppointmentData(Appointment selectedAppointment)
     {
         idField.setText( ((Integer)selectedAppointment.getId()).toString() );
@@ -284,6 +297,7 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
         startBox.setValue(selectedAppointment.getStart());
         endBox.setValue(selectedAppointment.getEnd());
 
+        // Get the customer associated with the selected appointment
         int i = 0;
         for(; i < customers.size(); i++)
             if(customers.get(i).getId() == selectedAppointment.getCustomerId())
@@ -291,6 +305,7 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
 
         customerBox.getSelectionModel().select(i);
 
+        // Get the contact associated with the selected appointment
         for(i = 0; i < contacts.size(); i++)
             if(contacts.get(i).getId() == selectedAppointment.getContactId())
                 break;
