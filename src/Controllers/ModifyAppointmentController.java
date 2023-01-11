@@ -269,7 +269,7 @@ public class ModifyAppointmentController extends BaseAppointmentControl implemen
             if(startBox.getValue().isAfter(endBox.getValue()))
                 throw new Exception("The appointment start time must be before the end time");
 
-            if(!DBAppointment.validateSelectedTimes(Integer.parseInt(idField.getText()), appointmentDate,
+            if(!DBAppointment.validateAppointmentTimes(Integer.parseInt(idField.getText()), appointmentDate,
                                                                                 startBox.getValue(), endBox.getValue()))
                 throw new Exception("The selected time overlaps with another appointment. Please try again");
         } catch(DateTimeParseException e){

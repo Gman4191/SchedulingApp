@@ -6,13 +6,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.util.Locale;
+import java.io.IOException;
 
 public class Main extends Application {
 
+    /**
+     * Load and display the main menu
+     * @param primaryStage the primary stage
+     * @throws IOException when the main menu fails to load
+     */
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws IOException {
         Parent root = new FXMLLoader(getClass().getResource("../Views/loginView.fxml")).load();
         primaryStage.setTitle("Scheduling System");
         primaryStage.setScene(new Scene(root, 900, 600));

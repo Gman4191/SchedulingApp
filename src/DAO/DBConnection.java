@@ -4,16 +4,41 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DBConnection {
+    /**
+     * The java database protocol
+     */
     private static final String protocol = "jdbc";
+    /**
+     * The database user name
+     */
     private static final String userName = "sqlUser";
-    private static final String vendorName = ":mysql:";
-    private static final String serverIp = "//127.0.0.1:3306/";
+    /**
+     * The database password
+     */
     private static final String password = "Passw0rd!";
+    /**
+     * The database vendor name
+     */
+    private static final String vendorName = ":mysql:";
+    /**
+     * The database server IP address
+     */
+    private static final String serverIp = "//127.0.0.1:3306/";
+    /**
+     * The database name
+     */
     private static final String databaseName = "client_schedule";
-    private static final String MYSQLJBCDRIVER = "com.mysql.cj.jdbc.Driver";
-
+    /**
+     * The java database driver
+     */
+    private static final String MYSQLJDBCDRIVER = "com.mysql.cj.jdbc.Driver";
+    /**
+     * The connection URL
+     */
     private static final String jdbcURL = protocol + vendorName + serverIp + databaseName;
-
+    /**
+     * The database connection
+     */
     private static Connection conn = null;
 
     /**
@@ -24,7 +49,7 @@ public class DBConnection {
     {
         try
         {
-            Class.forName(MYSQLJBCDRIVER);
+            Class.forName(MYSQLJDBCDRIVER);
             conn = DriverManager.getConnection(jdbcURL, userName, password);
         } catch(Exception e)
         {

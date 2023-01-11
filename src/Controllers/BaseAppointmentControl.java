@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAO.DBAppointment;
+import DAO.DBContact;
 import DAO.DBCustomer;
 import Models.Contact;
 import Models.Customer;
@@ -83,6 +83,6 @@ public class BaseAppointmentControl {
      */
     protected static void setContacts()
     {
-        contacts = DBAppointment.getAllContacts();
+        contacts = DBContact.getAllContacts();
     }
 }

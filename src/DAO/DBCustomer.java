@@ -190,37 +190,12 @@ public class DBCustomer {
 
             if(resultSet.next())
                 division = new FirstLevelDivision(divisionId, resultSet.getString("Division"),
-                        resultSet.getInt("Country_ID"));
+                                                  resultSet.getInt("Country_ID"));
         } catch(SQLException e)
         {
             e.printStackTrace();
         }
 
         return division;
-    }
-
-    /**
-     * Find a country by id
-     * @param countryId the country id to search for
-     * @return the found country
-     */
-    public static Country getCountry(int countryId){
-        String query = "SELECT Country_ID, Country FROM Countries WHERE Country_ID = ?;";
-        Country country = null;
-
-        try{
-            PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
-            select.setInt(1, countryId);
-            select.executeQuery();
-            ResultSet resultSet = select.getResultSet();
-
-            if(resultSet.next())
-                country = new Country(resultSet.getInt("Country_ID"), resultSet.getString("Country"));
-        } catch(SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        return country;
     }
 }

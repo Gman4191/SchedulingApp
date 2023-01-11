@@ -91,7 +91,7 @@
             </VBox>
             <VBox spacing="30.0">
                <children>
-                  <ComboBox fx:id="countryBox" prefWidth="150.0" promptText="Country" />
+                  <ComboBox fx:id="countryBox" prefWidth="150.0" promptText="Country" onAction="#OnSelectCountry"/>
                   <ComboBox fx:id="divisionBox" prefWidth="150.0" promptText="First-Level Division" />
                </children>
             </VBox>

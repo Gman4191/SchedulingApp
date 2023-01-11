@@ -253,7 +253,7 @@ public class AddAppointmentController extends BaseAppointmentControl implements 
             if(startBox.getValue().isAfter(endBox.getValue()))
                 throw new Exception("The appointment start time must be before the end time");
 
-            if(!DBAppointment.validateSelectedTimes(appointmentDate, startBox.getValue(), endBox.getValue()))
+            if(!DBAppointment.validateAppointmentTimes(appointmentDate, startBox.getValue(), endBox.getValue()))
                 throw new Exception("The selected time overlaps with another appointment. Please try again");
         } catch(DateTimeParseException e){
             Utilities.displayErrorMessage("The entered date must be of the format 'MM/dd/yyyy'");

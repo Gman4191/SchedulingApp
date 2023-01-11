@@ -1,6 +1,7 @@
 package Controllers;
 
 import DAO.DBAppointment;
+import DAO.DBContact;
 import DAO.DBCustomer;
 import DAO.DBReport;
 import Models.Appointment;
@@ -315,7 +316,7 @@ public class MainMenuController implements Initializable {
         });
 
         // Initialize the drop down of contact options
-        contactBox.setItems(DBAppointment.getAllContacts());
+        contactBox.setItems(DBContact.getAllContacts());
 
         // Initialize the contact appointment report table
         contactApptIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -415,6 +416,8 @@ public class MainMenuController implements Initializable {
                 // Update the customer and appointment tables
                 customerTable.setItems(DBCustomer.getAllCustomers());
                 appointmentTable.setItems(DBAppointment.getAllAppointments());
+                customerBox.setItems(DBCustomer.getAllCustomers());
+                customerApptTable.setItems(null);
             }
         } catch(Exception e)
         {

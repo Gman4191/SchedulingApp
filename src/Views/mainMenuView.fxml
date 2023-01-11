@@ -51,7 +51,7 @@
                      <children>
                         <TableView fx:id="appointmentTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                           <columns>
-                            <TableColumn fx:id="appointmentIdCol" prefWidth="29.666664123535156" text="ID" />
+                            <TableColumn fx:id="appointmentIdCol" prefWidth="30.0" text="ID" />
                             <TableColumn fx:id="appointmentTitleCol" prefWidth="72.0" text="Title" />
                               <TableColumn fx:id="appointmentTypeCol" prefWidth="97.0" text="Type" />
                               <TableColumn fx:id="appointmentDescCol" prefWidth="93.0" text="Description" />

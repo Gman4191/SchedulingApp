@@ -50,13 +50,12 @@ public class ModifyCustomerController implements Initializable {
     public ComboBox<FirstLevelDivision> divisionBox;
 
     /**
-     * Initialize the UI component
+     * Initialize the UI components
      * @param url the URL
      * @param resourceBundle the resource bundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        countryBox.setItems(DBCustomer.getAllCountries());
     }
 
     /**
@@ -71,11 +70,18 @@ public class ModifyCustomerController implements Initializable {
         postalCodeField.setText(selectedCustomer.getPostalCode());
         phoneNumberField.setText(selectedCustomer.getPhone());
 
-        Country selectedCountry = DBCustomer.getCountry(selectedCustomer.getCountryId());
-        countryBox.getSelectionModel().select(selectedCountry);
+        countryBox.setItems(DBCustomer.getAllCountries());
+        int i = 0;
+        for(; i < countryBox.getItems().size(); i++)
+            if(countryBox.getItems().get(i).getId() == selectedCustomer.getCountryId())
+                break;
+        countryBox.getSelectionModel().select(i);
 
-        divisionBox.setItems(DBCustomer.getDivisions(selectedCountry));
-        divisionBox.getSelectionModel().select(DBCustomer.getDivision(selectedCustomer.getDivisionId()));
+        divisionBox.setItems(DBCustomer.getDivisions(countryBox.getSelectionModel().getSelectedItem()));
+        for(i = 0; i < divisionBox.getItems().size(); i++)
+            if(divisionBox.getItems().get(i).getId() == selectedCustomer.getDivisionId())
+                break;
+        divisionBox.getSelectionModel().select(i);
     }
 
     /**
@@ -137,11 +143,26 @@ public class ModifyCustomerController implements Initializable {
 
             if(phoneNumberField.getText().isEmpty())
                 throw new Exception("Phone number can not be blank");
+
+            if(countryBox.getSelectionModel().isEmpty())
+                throw new Exception("A Country must be selected");
+
+            if(divisionBox.getSelectionModel().isEmpty())
+                throw new Exception("A Division must be selected");
         } catch(Exception e)
         {
             Utilities.displayErrorMessage(e.getMessage());
             return false;
         }
         return true;
+    }
+
+    /**
+     * Update the first-level division options when a country is selected
+     * @param actionEvent the handled selection event
+     */
+    public void OnSelectCountry(ActionEvent actionEvent) {
+        divisionBox.setItems(DBCustomer.getDivisions(countryBox.getSelectionModel().getSelectedItem()));
+        divisionBox.setValue(null);
     }
 }

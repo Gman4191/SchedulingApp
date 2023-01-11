@@ -2,16 +2,13 @@ package DAO;
 
 import Models.Appointment;
 import Utility.Utilities;
-
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 
-public class DBLogin {
-    public final static String dateTimePattern = "yyyy-MM-dd HH:mm:ss";
-    public final static ZoneId databaseTimeZone = ZoneId.of("UTC");
+public class DBLogin extends DBBase{
+
     /**
      * Verify the user's credentials
      * @param userName the user's name
@@ -45,9 +42,13 @@ public class DBLogin {
         return resultSet.getInt("User_ID");
     }
 
+    /**
+     * Get any existing upcoming appointment information
+     * @param currentTime the current time
+     * @return an upcoming appointment
+     */
     public static Appointment getUpcomingAppointment(LocalDateTime currentTime)
     {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
         String query = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, a.Customer_ID, a.User_ID, a.Contact_ID, " +
                 "Customer_Name, User_Name, Contact_Name " +
                 "FROM Appointments a JOIN Customers cu JOIN Contacts co JOIN Users u " +
@@ -58,21 +59,26 @@ public class DBLogin {
             PreparedStatement select = DBConnection.getConnection().prepareStatement(query);
             select.setTimestamp(1, Timestamp.valueOf(currentTime));
             select.executeQuery();
-            ResultSet resultSet = select.getResultSet();
+            ResultSet rs = select.getResultSet();
 
-            if(resultSet.next())
+            if(rs.next())
             {
-                LocalDateTime appointmentStart = LocalDateTime.parse(resultSet.getString("Start"), formatter);
-                LocalDateTime appointmentEnd = LocalDateTime.parse(resultSet.getString("End"), formatter);
-                LocalTime startTime = Utilities.changeTimeZone(appointmentStart.toLocalTime(), databaseTimeZone, ZoneId.systemDefault());
-                LocalTime endTime = Utilities.changeTimeZone(appointmentEnd.toLocalTime(), databaseTimeZone, ZoneId.systemDefault());
-                return new Appointment(resultSet.getInt("Appointment_ID"), resultSet.getString("Title"),
-                        resultSet.getString("Description"), resultSet.getString("Location"),
-                        resultSet.getString("Type"), appointmentStart.toLocalDate(), startTime,
-                        endTime, resultSet.getInt("Customer_ID"),
-                        resultSet.getString("Customer_Name"), resultSet.getInt("User_ID"),
-                        resultSet.getString("User_Name"), resultSet.getInt("Contact_ID"),
-                        resultSet.getString("Contact_Name"));
+                // Get the start and end time of the appointment
+                LocalDateTime appointmentStart = LocalDateTime.parse(rs.getString("Start"), formatter);
+                LocalDateTime appointmentEnd = LocalDateTime.parse(rs.getString("End"), formatter);
+
+                // Convert the appointment start and end time to the current time zone
+                LocalTime startTime = Utilities.changeTimeZone(appointmentStart.toLocalTime(), dbTimeZone, ZoneId.systemDefault());
+                LocalTime endTime = Utilities.changeTimeZone(appointmentEnd.toLocalTime(), dbTimeZone, ZoneId.systemDefault());
+
+                // Return the upcoming appointment information
+                return new Appointment(rs.getInt("Appointment_ID"), rs.getString("Title"),
+                                       rs.getString("Description"), rs.getString("Location"),
+                                       rs.getString("Type"), appointmentStart.toLocalDate(), startTime,
+                                       endTime, rs.getInt("Customer_ID"),
+                                       rs.getString("Customer_Name"), rs.getInt("User_ID"),
+                                       rs.getString("User_Name"), rs.getInt("Contact_ID"),
+                                       rs.getString("Contact_Name"));
             }
         } catch(SQLException e)
         {

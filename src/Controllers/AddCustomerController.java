@@ -133,5 +133,6 @@ public class AddCustomerController implements Initializable {
      */
     public void OnSelectCountry(ActionEvent actionEvent) {
         divisionBox.setItems(DBCustomer.getDivisions(countryBox.getSelectionModel().getSelectedItem()));
+        divisionBox.setValue(null);
     }
 }

@@ -5,7 +5,6 @@ public class Country {
      * The country id
      */
     private int id;
-
     /**
      * The country name
      */
